@@ -1,7 +1,4 @@
-// To parse this JSON data, do
-//
-//     final expedientesModel = expedientesModelFromMap(jsonString);
-
+ 
 import 'dart:convert';
 
 class ExpedientesModel {
@@ -13,27 +10,17 @@ class ExpedientesModel {
 
   String msj;
   int codigo;
-  List<Map<String, String>> data;
+  List<ExpedienteModel> data;
 
-  factory ExpedientesModel.fromJson(String str) =>
-      ExpedientesModel.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
+  factory ExpedientesModel.fromJson(String str) => ExpedientesModel.fromMap(json.decode(str));
+ 
 
   factory ExpedientesModel.fromMap(Map<String, dynamic> json) =>
       ExpedientesModel(
         msj: json["msj"],
         codigo: json["codigo"],
-        data: List<Map<String, String>>.from(json["data"].map((x) => Map.from(x)
-            .map((k, v) => MapEntry<String, String>(k, v == null ? null : v)))),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "msj": msj,
-        "codigo": codigo,
-        "data": List<dynamic>.from(data.map((x) => Map.from(x).map(
-            (k, v) => MapEntry<String, dynamic>(k, v == null ? null : v)))),
-      };
+        data: List<ExpedienteModel>.from(json["data"].map((x) => ExpedienteModel.fromMap(x))),
+      ); 
 }
 
 class ExpedienteModel {
@@ -65,7 +52,7 @@ class ExpedienteModel {
     this.domicilio,
     this.email,
     this.estadoCivil,
-    this.idTipoDocumento, 
+    this.idTipoDocumento,
     this.municipio,
     this.numeroDocumento,
     this.telCelular,
@@ -73,23 +60,26 @@ class ExpedienteModel {
     this.telOficina,
   });
 
-  factory ExpedienteModel.fromJsonMap( Map<String, dynamic> json ) => ExpedienteModel (
+  factory ExpedienteModel.fromJson(String str) => ExpedienteModel.fromMap(json.decode(str));
 
-    apellido : json["apellido"],
-    departamento : json["departamento"],
-    direccionTrabajo : json["direccionTrabajo"],
-    domicilio : json["domicilio"],
-    email : json["email"],
-    estadoCivil : json["estadoCivil"],
-    fecha_nacimiento : json["fecha_nacimiento"],
-    idTipoDocumento : json["idTipoDocumento"],
-    municipio : json["municipio"],
-    nombre : json["nombre"],
-    numeroDocumento : json["numeroDocumento"],
-    sexo : json["sexo"],
-    telCelular : json["telCelular"],
-    telDomicilio : json["telDomicilio"],
-    telOficina : json["telOficina"],
-    token_expediente : json["token_expediente"],
-  );
+  //factory Cast.fromMap(Map<String, dynamic> json) => Cast(
+  factory ExpedienteModel.fromMap(Map<String, dynamic> json) =>
+      ExpedienteModel(
+        apellido: json["apellido"],
+        departamento: json["departamento"],
+        direccionTrabajo: json["direccionTrabajo"],
+        domicilio: json["domicilio"],
+        email: json["email"],
+        estadoCivil: json["estadoCivil"],
+        fecha_nacimiento: json["fecha_nacimiento"],
+        idTipoDocumento: json["idTipoDocumento"],
+        municipio: json["municipio"],
+        nombre: json["nombre"],
+        numeroDocumento: json["numeroDocumento"],
+        sexo: json["sexo"],
+        telCelular: json["telCelular"],
+        telDomicilio: json["telDomicilio"],
+        telOficina: json["telOficina"],
+        token_expediente: json["token_expediente"],
+      );
 }
