@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicpro/src/pages/pages.dart';
+import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/services/services.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,8 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-            ChangeNotifierProvider<AuthServices>(create: (_) => AuthServices()),
+        ChangeNotifierProvider<AuthServices>(create: (_) => AuthServices()),
+        ChangeNotifierProvider<ExpedientesProvider>(create: (_) => ExpedientesProvider()),
       ],
       child: MyApp(),
     );

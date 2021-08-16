@@ -25,17 +25,15 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget build(BuildContext context) {
     final mediaSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-        //El stack por si se agrega un fondo de pantalla(background)
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(child: _widgetOptions.elementAt(_indexSeleccionado))
-              ],
-            ),
-          ],
-        ),
+      backgroundColor: temaApp.backgroundColor,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(child: _widgetOptions.elementAt(_indexSeleccionado))
+            ],
+          ),
+        ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         animationDuration: Duration(milliseconds: 400),

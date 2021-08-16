@@ -6,6 +6,7 @@ class InputDecorations {
     required String hintText,
     required String labelText,
     IconData? prefixIcon,
+    IconData? suffixIcon,
   }) {
     return InputDecoration(
         enabledBorder: OutlineInputBorder(
@@ -23,9 +24,17 @@ class InputDecorations {
         labelText: labelText,
         labelStyle: TextStyle(
           color: Colors.grey,
+        ), 
+        helperStyle: TextStyle(
+          color: Colors.red
         ),
+        suffixIcon: suffixIcon != null
+            ? Icon(suffixIcon, color: temaApp.primaryColor)
+            : null,
         prefixIcon: prefixIcon != null
             ? Icon(prefixIcon, color: temaApp.primaryColor)
             : null);
   }
 }
+
+
