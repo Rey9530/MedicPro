@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/providers/expedientes_provider.dart';
+import 'package:medicpro/src/searchs/search_paciente.dart';
 import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 class PatientsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  final expedientesProvider = Provider.of<ExpedientesProvider>(context);
+    final expedientesProvider = Provider.of<ExpedientesProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -28,7 +29,9 @@ class PatientsPage extends StatelessWidget {
             listExpedientes: expedientesProvider.lisExpdientes,
             hacellamada: () => expedientesProvider.getAllExpedientes(),
           ),
-          (expedientesProvider.isLoading)? Center(child: CircularProgressIndicator()) : Container()
+          (expedientesProvider.isLoading)
+              ? Container( margin: EdgeInsets.only(bottom: 20), child: Center(child: CircularProgressIndicator()))
+              : Container()
         ],
       ),
     );
@@ -38,14 +41,13 @@ class PatientsPage extends StatelessWidget {
 class _BotonBuscar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      child: Center(
-        child: FaIcon(
-          FontAwesomeIcons.search,
-          color: temaApp.backgroundColor,
-        ),
+    return IconButton(
+      icon: Icon(
+        Icons.search_outlined,
       ),
+      onPressed: () {
+        showSearch(context: context, delegate: ExpedientesSeach() );
+      },
     );
   }
 }
