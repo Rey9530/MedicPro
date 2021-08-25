@@ -26,11 +26,12 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: NotificationsServices.messengerkey,
       debugShowCheckedModeBanner: false,
       title: 'MedicPro',
-      initialRoute: 'check',
+      initialRoute:'check',// 'check',
       routes: {
         'login': (_) => LoginApp(),
         'check': (_) => CheckAuthPage(),
         'home': (_) => NavigatorPage(),
+        //'exp_detalle': (_) => ExpedientePerfilPage(),
       },
     );
   }

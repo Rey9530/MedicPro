@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
+import 'package:medicpro/src/pages/pages.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 
 class ListExpdientes extends StatefulWidget {
@@ -20,7 +21,7 @@ class _ListExpdientesState extends State<ListExpdientes> {
     // TODO: implement initState
     super.initState();
 
-    scrollController.addListener(() { 
+    scrollController.addListener(() {
       if ((scrollController.position.maxScrollExtent - 50) <=
           scrollController.position.pixels) {
         //TODO
@@ -43,10 +44,24 @@ class _ListExpdientesState extends State<ListExpdientes> {
         scrollDirection: Axis.vertical,
         itemCount: widget.listExpedientes.length,
         itemBuilder: (_, i) {
-          return CardsExpedintes(expdiente: widget.listExpedientes[i] );
+          return GestureDetector(
+            onTap: () {
+              // Navigator.of(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ExpedientePerfilPage(expediente: widget.listExpedientes[i]),
+              //   ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpedientePerfilPage(expediente: widget.listExpedientes[i]),
+                ),
+              );
+            },
+            child: CardsExpedintes(expdiente: widget.listExpedientes[i]),
+          );
         },
       ),
     );
   }
 }
- 
