@@ -1,16 +1,22 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicpro/src/helpers/debouncer.dart';
-import 'package:medicpro/src/models/expedientes_model.dart';
+import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/services/services.dart';
+import 'package:medicpro/src/themes/theme.dart';
 
 class ExpedientesProvider extends ChangeNotifier {
   String _baseUrl = "medicprohn.app";
   bool isLoading = false;
+  bool isSavin = false;
   int _page = 0;
   List<ExpedienteModel> lisExpdientes = [];
+  ExpedienteModel? expeidnteSeleted;
+  List<Map<String, dynamic>> listSexo = [];
+  List<Map<String, dynamic>> listDocumentos = [];
+  List<Map<String, dynamic>> listeEstadosCivil = [];
   final dataUser = new AuthServices();
 
   final debouncer = Debouncer(duration: Duration(milliseconds: 500));
@@ -22,16 +28,9 @@ class ExpedientesProvider extends ChangeNotifier {
 
   ExpedientesProvider() {
     this.getAllExpedientes();
-  }
-
-  Future<String> _getJsonData(String endPoint, [int pagina = 0]) async {
-    String token = await dataUser.readToken();
-    final url = Uri.https(_baseUrl, endPoint, {
-      'page': pagina.toString(),
-      'token': token,
-    }); 
-    final response = await http.get(url);
-    return response.body;
+    this.getSexo();
+    this.getDocumentos();
+    this.getListeEstadosCivil();
   }
 
   getAllExpedientes() async {
@@ -46,14 +45,102 @@ class ExpedientesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future saveOrUpdate(ExpedienteModel expdiente) async {
+    this.isSavin = true;
+    notifyListeners();
+    if (expdiente.token_expediente == null) {
+      // Guardar Producto
+      await saveExpediente(expdiente);
+    } else {
+      // Actualizar Producto
+      await updateExpediente(expdiente);
+    }
+    //await cargar_datos(expdiente);
+    this.isSavin = false;
+    notifyListeners();
+  }
+
+  Future<String> _getJsonData(String endPoint, [int pagina = 0]) async {
+    String token = await dataUser.readToken();
+    final url = Uri.https(_baseUrl, endPoint, {
+      'page': pagina.toString(),
+      'token': token,
+    });
+    final response = await http.get(url);
+    return response.body;
+  }
+
+  Future<String?> updateExpediente(ExpedienteModel expdiente) async {
+    String token = await dataUser.readToken();
+    final url = Uri.https(_baseUrl, '/core/api_rest/update_expedientes');
+    expdiente.token = token; 
+    final response = await http.post(url, body:expdiente.toSend()); 
+    final index = this.lisExpdientes.indexWhere(
+        (element) => element.token_expediente == expdiente.token_expediente);
+    this.lisExpdientes[index] = expdiente;
+    return expdiente.token_expediente;
+  }
+
+  Future<String?> saveExpediente(ExpedienteModel expdiente) async {
+    final url = Uri.https(_baseUrl, '/core/api_rest/update_expedientes');
+    final resp = await http.post(url, body: expdiente.toJson());
+    final dataResponse = json.decode(resp.body);
+    expdiente.token_expediente = dataResponse["token_expediente"];
+    this.lisExpdientes.add(expdiente);
+    return expdiente.token_expediente;
+  }
+
+  getSexo() async {
+    final data = await this._getJsonData('/core/api_rest/get_sexo');
+    final popularResponse = Sexos.fromJson(data);
+    popularResponse.data.forEach((element) {
+      final Map<String, dynamic> variebla = {
+        'value': element.idsexo,
+        'label': element.sexo,
+        'textStyle': TextStyle(color: temaApp.primaryColor),
+      };
+      this.listSexo.add(variebla);
+    });
+    //notifyListeners();
+  }
+
+  getDocumentos() async {
+    final data =
+        await this._getJsonData('/core/api_rest/get_all_tipo_documentos');
+    final popularResponse = Documentos.fromJson(data);
+    popularResponse.data.forEach((element) {
+      final Map<String, dynamic> variebla = {
+        'value': element.idTipoDocumento,
+        'label': element.tipoDocumento,
+        'textStyle': TextStyle(color: temaApp.primaryColor),
+      };
+      this.listDocumentos.add(variebla);
+    });
+    //notifyListeners();
+  }
+
+  getListeEstadosCivil() async {
+    final data = await this._getJsonData('/core/api_rest/get_estado_civil');
+    final popularResponse = EstadosCivil.fromJson(data);
+    popularResponse.data.forEach((element) {
+      final Map<String, dynamic> variebla = {
+        'value': element.id,
+        'label': element.value,
+        'textStyle': TextStyle(color: temaApp.primaryColor),
+      };
+      this.listeEstadosCivil.add(variebla);
+    });
+    print(this.listeEstadosCivil[0]);
+    //notifyListeners();
+  }
+
   Future<List<ExpedienteModel>> searchExpediente(String query) async {
-     
     String token = await dataUser.readToken();
     final url = Uri.https(_baseUrl, '/core/api_rest/get_search_expedientes', {
       'query': query,
       'token': token,
-    }); 
-    final response = await http.get(url); 
+    });
+    final response = await http.get(url);
     final popularResponse = ExpedientesModel.fromJson(response.body);
     return popularResponse.data;
   }

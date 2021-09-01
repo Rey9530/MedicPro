@@ -37,10 +37,18 @@ class ExpedientesSeach extends SearchDelegate{
     return Container(
       child: Center(
         child: FaIcon(
-          FontAwesomeIcons.userInjured,
+          FontAwesomeIcons.search,
           color: Colors.black38,
           size: 130,
         ),
+      ),
+    );
+  }
+  
+  Widget Buscando() {
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -56,13 +64,13 @@ class ExpedientesSeach extends SearchDelegate{
     return StreamBuilder(
         stream: expedientesProvider.suggestonStream,
         builder: (_, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) return _emtypData();
+          if (!snapshot.hasData) return Buscando();
           final listmovies = snapshot.data;
           return (listmovies.length==0) 
-          ? _emtypData()
+          ? Buscando()
           :ListView.builder(
             itemCount: listmovies.length,
-            itemBuilder: (_, index) => CardsExpedintes(expdiente: listmovies[index]),
+            itemBuilder: (_, index) => GestureDetector( onTap: ()=> close(context, null) , child: CardsExpedintes(expdiente: listmovies[index])),
           );
         });
   }

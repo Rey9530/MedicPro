@@ -30,17 +30,19 @@ class ExpedienteModel {
   String foto;
   String fecha_nacimiento;
   String sexo;
-  String? departamento;
-  String? direccionTrabajo;
-  String? domicilio;
+  String? pais;//por el momento no
+  String? departamento;//por el momento no
+  String? idTipoDocumento;
+  String? municipio;//por el momento no
+  String? direccionTrabajo;//-----
+  String? domicilio;//-----
   String? email;
   String? estadoCivil;
-  String? idTipoDocumento;
-  String? municipio;
   String? numeroDocumento;
   String? telCelular;
   String? telDomicilio;
   String? telOficina;
+  String? token;
 
   ExpedienteModel({
     required this.apellido,
@@ -49,6 +51,7 @@ class ExpedienteModel {
     required this.fecha_nacimiento,
     required this.token_expediente,
     required this.sexo,
+    this.pais,
     this.departamento,
     this.direccionTrabajo,
     this.domicilio,
@@ -60,6 +63,7 @@ class ExpedienteModel {
     this.telCelular,
     this.telDomicilio,
     this.telOficina,
+    this.token,
   });
   get getImg {
     if (this.foto != null  && this.foto != ""  && this.foto != '' ) {
@@ -71,6 +75,50 @@ class ExpedienteModel {
 
   factory ExpedienteModel.fromJson(String str) => ExpedienteModel.fromMap(json.decode(str));
 
+  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toMap() => {
+        "apellido": this.apellido,
+        "nombre": this.nombre,
+        "foto": this.foto,
+        "fecha_nacimiento": this.fecha_nacimiento,
+        "token_expediente": this.token_expediente,
+        "sexo": this.sexo,
+        "pais": this.pais,
+        "departamento": this.departamento,
+        "direccionTrabajo": this.direccionTrabajo,
+        "domicilio": this.domicilio,
+        "email": this.email,
+        "estadoCivil": this.estadoCivil,
+        "idTipoDocumento": this.idTipoDocumento,
+        "municipio": this.municipio,
+        "numeroDocumento": this.numeroDocumento,
+        "telCelular": this.telCelular,
+        "telDomicilio": this.telDomicilio,
+        "telOficina": this.telOficina,
+        "token": this.token,
+      };
+
+      Map<String, String> toSend() => {
+        "apellido": this.apellido,
+        "nombre": this.nombre,
+        "foto": this.foto,
+        "fecha_nacimiento": this.fecha_nacimiento,
+        "token_expediente": this.token_expediente,
+        "sexo": this.sexo,
+        "pais": this.pais.toString(),
+        "departamento": this.departamento.toString(),
+        "direccionTrabajo": this.direccionTrabajo.toString(),
+        "domicilio": this.domicilio.toString(),
+        "email": this.email.toString(),
+        "estadoCivil": this.estadoCivil.toString(),
+        "idTipoDocumento": this.idTipoDocumento.toString(),
+        "municipio": this.municipio.toString(),
+        "numeroDocumento": this.numeroDocumento.toString(),
+        "telCelular": this.telCelular.toString(),
+        "telDomicilio": this.telDomicilio.toString(),
+        "telOficina": this.telOficina.toString(),
+        "token": this.token.toString(),
+      };
   //factory Cast.fromMap(Map<String, dynamic> json) => Cast(
   factory ExpedienteModel.fromMap(Map<String, dynamic> json) =>
       ExpedienteModel(
@@ -81,6 +129,7 @@ class ExpedienteModel {
         direccionTrabajo: json["direccionTrabajo"],
         domicilio: json["domicilio"],
         email: json["email"],
+        pais: json["pais"],
         estadoCivil: json["estadoCivil"],
         fecha_nacimiento: json["fecha_nacimiento"],
         idTipoDocumento: json["idTipoDocumento"],
@@ -91,5 +140,28 @@ class ExpedienteModel {
         telDomicilio: json["telDomicilio"],
         telOficina: json["telOficina"],
         token_expediente: json["token_expediente"],
+        token: json["token"],
+      );
+
+       ExpedienteModel copy() => ExpedienteModel(
+        apellido: this.apellido,
+        nombre: this.nombre,
+        foto: this.foto,
+        fecha_nacimiento: this.fecha_nacimiento,
+        token_expediente: this.token_expediente,
+        sexo: this.sexo,
+        pais: this.pais,
+        departamento: this.departamento,
+        direccionTrabajo: this.direccionTrabajo,
+        domicilio: this.domicilio,
+        email: this.email,
+        estadoCivil: this.estadoCivil,
+        idTipoDocumento: this.idTipoDocumento,
+        municipio: this.municipio,
+        numeroDocumento: this.numeroDocumento,
+        telCelular: this.telCelular,
+        telDomicilio: this.telDomicilio,
+        telOficina: this.telOficina,
+        token: this.token,
       );
 }

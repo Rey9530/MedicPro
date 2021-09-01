@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
+import 'package:medicpro/src/pages/pages.dart';
+import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
+import 'package:medicpro/src/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ExpedientePerfilPage extends StatelessWidget {
   final ExpedienteModel expediente;
@@ -16,7 +20,7 @@ class ExpedientePerfilPage extends StatelessWidget {
         color: temaApp.backgroundColor,
         child: Stack(
           children: [
-            BackGround(),
+            HeaderBackGround(),
             SafeArea(child: Body(expediente)),
           ],
         ),
@@ -33,7 +37,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppBardCustomer(),
+        AppBardCustomer(expediente),
         HeaderProfile(expediente),
         CardInfo(expediente),
         Opciones(),
@@ -82,7 +86,7 @@ class Opcion extends StatelessWidget {
       height: 50,
       child: Material(
         borderRadius: BorderRadius.circular(40),
-        elevation: 10,
+        elevation: 5,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Row(
@@ -98,7 +102,7 @@ class Opcion extends StatelessWidget {
               ),
               Text(
                 titulo,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               Expanded(
                 child: Container(),
@@ -115,7 +119,7 @@ class Opcion extends StatelessWidget {
 class CardInfo extends StatelessWidget {
   final ExpedienteModel expediente;
 
-  const CardInfo( this.expediente);
+  const CardInfo(this.expediente);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -145,11 +149,11 @@ class CardInfo extends StatelessWidget {
                         Text(
                           "Telefono:",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(
                           expediente.telCelular.toString(),
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 16),
                         )
                       ],
                     ),
@@ -167,11 +171,11 @@ class CardInfo extends StatelessWidget {
                         Text(
                           "Sexo: ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(
                           expediente.sexo,
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 16),
                         )
                       ],
                     ),
@@ -188,11 +192,11 @@ class CardInfo extends StatelessWidget {
                         Text(
                           "F. Nacimiento:",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(
                           expediente.fecha_nacimiento,
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 16),
                         )
                       ],
                     ),
@@ -209,8 +213,7 @@ class CardInfo extends StatelessWidget {
 
 class HeaderProfile extends StatelessWidget {
   final ExpedienteModel expediente;
-
-  const HeaderProfile( this.expediente);
+  const HeaderProfile(this.expediente);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -225,22 +228,22 @@ class HeaderProfile extends StatelessWidget {
             child: FadeInImage(
               width: 125,
               height: 125,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               placeholder: AssetImage("assets/imgs/no-image.png"),
               image: NetworkImage(expediente.getImg),
             ),
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    expediente.nombre+" "+expediente.apellido,
+                    expediente.nombre + " " + expediente.apellido,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: temaApp.backgroundColor,
                     ),
@@ -248,9 +251,9 @@ class HeaderProfile extends StatelessWidget {
                     maxLines: 2,
                   ),
                   Text(
-                    "Demostracion",
+                    expediente.email.toString(),
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: temaApp.backgroundColor,
                     ),
@@ -266,12 +269,12 @@ class HeaderProfile extends StatelessWidget {
 }
 
 class AppBardCustomer extends StatelessWidget {
-  const AppBardCustomer({
-    Key? key,
-  }) : super(key: key);
+  final ExpedienteModel expedinte;
+  const AppBardCustomer(this.expedinte);
 
   @override
   Widget build(BuildContext context) {
+    final providerExpediente = Provider.of<ExpedientesProvider>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15),
       width: double.infinity,
@@ -283,35 +286,29 @@ class AppBardCustomer extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(),
             child: Container(
               width: 30,
-              height: 30, 
+              height: 30,
               child: FaIcon(
                 FontAwesomeIcons.chevronLeft,
                 color: Colors.white,
               ),
             ),
           ),
-          Icon(
-            FontAwesomeIcons.userEdit,
-            color: Colors.white,
+          GestureDetector(
+            onTap: () {
+              providerExpediente.expeidnteSeleted = expedinte.copy();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpedienteEditePage(),
+                ),
+              );
+            },
+            child: Icon(
+              FontAwesomeIcons.userEdit,
+              color: Colors.white,
+            ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class BackGround extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 350,
-      decoration: BoxDecoration(
-        color: temaApp.primaryColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(75),
-          bottomRight: Radius.circular(75),
-        ),
       ),
     );
   }

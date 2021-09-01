@@ -21,8 +21,10 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  brasil_fields: ^1.1.4
   cupertino_icons: ^1.0.2
   curved_navigation_bar: ^1.0.1
+  direct_select_flutter: ^1.1.1
   flutter:
     sdk: flutter
   flutter_secure_storage: ^4.2.1
@@ -30,6 +32,7 @@ dependencies:
   google_fonts: ^2.1.0
   http: ^0.13.3
   provider: ^5.0.0
+  select_form_field: ^2.2.0
 
 dev_dependencies:
   flutter_test:
