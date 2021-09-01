@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicpro/src/helpers/debouncer.dart';
@@ -14,6 +15,7 @@ class ExpedientesProvider extends ChangeNotifier {
   int _page = 0;
   List<ExpedienteModel> lisExpdientes = [];
   ExpedienteModel? expeidnteSeleted;
+  File? newPictureFile;
   List<Map<String, dynamic>> listSexo = [];
   List<Map<String, dynamic>> listDocumentos = [];
   List<Map<String, dynamic>> listeEstadosCivil = [];
@@ -31,6 +33,12 @@ class ExpedientesProvider extends ChangeNotifier {
     this.getSexo();
     this.getDocumentos();
     this.getListeEstadosCivil();
+  }
+
+  updateFoto(String imagen) {
+    this.expeidnteSeleted!.foto = imagen;
+    this.newPictureFile = File.fromUri(Uri(path: imagen));
+    notifyListeners();
   }
 
   getAllExpedientes() async {
@@ -51,14 +59,35 @@ class ExpedientesProvider extends ChangeNotifier {
     if (expdiente.token_expediente == null) {
       // Guardar Producto
       await saveExpediente(expdiente);
-      NotificationsServices.showSnackbar("Datos Guardados"); 
+      NotificationsServices.showSnackbar("Datos Guardados");
     } else {
       // Actualizar Producto
       await updateExpediente(expdiente);
-      NotificationsServices.showSnackbar("Datos Actualizados"); 
-    } 
+      NotificationsServices.showSnackbar("Datos Actualizados");
+    }
     this.isSavin = false;
     notifyListeners();
+  }
+
+  Future<String?> uploadImage(String token) async {
+    if (this.newPictureFile == null) return null;
+
+    final url =
+        Uri.parse("https://" + _baseUrl + "/core/api_rest/upload_image");
+    final imageUpload = http.MultipartRequest('POST', url)
+      ..fields["token_expediente"] = token
+      ..fields["token"] = await dataUser.readToken();
+
+    final file =
+        await http.MultipartFile.fromPath('file', newPictureFile!.path);
+    imageUpload.files.add(file);
+    newPictureFile = null;
+    final streamedResponse = await imageUpload.send();
+    final resp = await http.Response.fromStream(streamedResponse);
+    print(resp.body);
+    final decodeData = json.decode(resp.body);
+    print(decodeData["data"]);
+    return decodeData["data"];
   }
 
   Future<String> _getJsonData(String endPoint, [int pagina = 0]) async {
@@ -74,10 +103,14 @@ class ExpedientesProvider extends ChangeNotifier {
   Future<String?> updateExpediente(ExpedienteModel expdiente) async {
     String token = await dataUser.readToken();
     final url = Uri.https(_baseUrl, '/core/api_rest/update_expedientes');
-    expdiente.token = token; 
-    final response = await http.post(url, body:expdiente.toSend()); 
+    expdiente.token = token;
+    await http.post(url, body: expdiente.toSend());
     final index = this.lisExpdientes.indexWhere(
         (element) => element.token_expediente == expdiente.token_expediente);
+    if (this.newPictureFile != null) {
+      final String? img = await uploadImage(expdiente.token_expediente);
+      expdiente.foto = img!;
+    }
     this.lisExpdientes[index] = expdiente;
     return expdiente.token_expediente;
   }

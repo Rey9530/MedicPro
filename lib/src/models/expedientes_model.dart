@@ -1,4 +1,3 @@
- 
 import 'dart:convert';
 
 class ExpedientesModel {
@@ -12,15 +11,16 @@ class ExpedientesModel {
   int codigo;
   List<ExpedienteModel> data;
 
-  factory ExpedientesModel.fromJson(String str) => ExpedientesModel.fromMap(json.decode(str));
- 
+  factory ExpedientesModel.fromJson(String str) =>
+      ExpedientesModel.fromMap(json.decode(str));
 
   factory ExpedientesModel.fromMap(Map<String, dynamic> json) =>
       ExpedientesModel(
         msj: json["msj"],
         codigo: json["codigo"],
-        data: List<ExpedienteModel>.from(json["data"].map((x) => ExpedienteModel.fromMap(x))),
-      ); 
+        data: List<ExpedienteModel>.from(
+            json["data"].map((x) => ExpedienteModel.fromMap(x))),
+      );
 }
 
 class ExpedienteModel {
@@ -30,12 +30,12 @@ class ExpedienteModel {
   String foto;
   String fecha_nacimiento;
   String sexo;
-  String? pais;//por el momento no
-  String? departamento;//por el momento no
+  String? pais; //por el momento no
+  String? departamento; //por el momento no
   String? idTipoDocumento;
-  String? municipio;//por el momento no
-  String? direccionTrabajo;//-----
-  String? domicilio;//-----
+  String? municipio; //por el momento no
+  String? direccionTrabajo; //-----
+  String? domicilio; //-----
   String? email;
   String? estadoCivil;
   String? numeroDocumento;
@@ -66,14 +66,15 @@ class ExpedienteModel {
     this.token,
   });
   get getImg {
-    if (this.foto != null  && this.foto != ""  && this.foto != '' ) {
+    if ( this.foto.startsWith("assets")) { 
       return "https://medicprohn.app/core/$foto";
     } else {
-      return "https://i.stack.imgur.com/GNhxO.png";
+      return this.foto;
     }
   }
 
-  factory ExpedienteModel.fromJson(String str) => ExpedienteModel.fromMap(json.decode(str));
+  factory ExpedienteModel.fromJson(String str) =>
+      ExpedienteModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
   Map<String, dynamic> toMap() => {
@@ -98,7 +99,7 @@ class ExpedienteModel {
         "token": this.token,
       };
 
-      Map<String, String> toSend() => {
+  Map<String, String> toSend() => {
         "apellido": this.apellido,
         "nombre": this.nombre,
         "foto": this.foto,
@@ -120,8 +121,7 @@ class ExpedienteModel {
         "token": this.token.toString(),
       };
   //factory Cast.fromMap(Map<String, dynamic> json) => Cast(
-  factory ExpedienteModel.fromMap(Map<String, dynamic> json) =>
-      ExpedienteModel(
+  factory ExpedienteModel.fromMap(Map<String, dynamic> json) => ExpedienteModel(
         nombre: json["nombre"],
         apellido: json["apellido"],
         foto: json["foto"],
@@ -143,7 +143,7 @@ class ExpedienteModel {
         token: json["token"],
       );
 
-       ExpedienteModel copy() => ExpedienteModel(
+  ExpedienteModel copy() => ExpedienteModel(
         apellido: this.apellido,
         nombre: this.nombre,
         foto: this.foto,

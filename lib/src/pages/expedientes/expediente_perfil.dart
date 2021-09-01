@@ -7,7 +7,7 @@ import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class ExpedientePerfilPage extends StatelessWidget { 
+class ExpedientePerfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final providerExpediente = Provider.of<ExpedientesProvider>(context);
@@ -219,16 +219,12 @@ class HeaderProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(125),
-            child: FadeInImage(
-              width: 125,
-              height: 125,
-              fit: BoxFit.cover,
-              placeholder: AssetImage("assets/imgs/no-image.png"),
-              image: NetworkImage(expediente.getImg),
-            ),
-          ),
+          ImagenPerfil(
+            height: 125,
+            radius: 125,
+            urlImagePerfil: expediente.getImg,
+            width: 125,
+          ), 
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -290,7 +286,7 @@ class AppBardCustomer extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () { 
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
