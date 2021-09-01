@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
 import 'package:medicpro/src/pages/pages.dart';
+import 'package:medicpro/src/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class CardsExpedintes extends StatelessWidget {
   final ExpedienteModel expdiente;
   const CardsExpedintes({required this.expdiente});
   @override
   Widget build(BuildContext context) {
+    final providerExpediente = Provider.of<ExpedientesProvider>(context);
     return GestureDetector(
       onTap: () {
+        providerExpediente.expeidnteSeleted = expdiente.copy();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ExpedientePerfilPage(expediente: expdiente),
+            builder: (context) => ExpedientePerfilPage(),
           ),
         );
       },

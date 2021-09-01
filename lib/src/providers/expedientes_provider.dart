@@ -51,11 +51,12 @@ class ExpedientesProvider extends ChangeNotifier {
     if (expdiente.token_expediente == null) {
       // Guardar Producto
       await saveExpediente(expdiente);
+      NotificationsServices.showSnackbar("Datos Guardados"); 
     } else {
       // Actualizar Producto
       await updateExpediente(expdiente);
-    }
-    //await cargar_datos(expdiente);
+      NotificationsServices.showSnackbar("Datos Actualizados"); 
+    } 
     this.isSavin = false;
     notifyListeners();
   }

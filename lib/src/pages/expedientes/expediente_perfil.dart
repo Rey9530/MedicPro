@@ -7,21 +7,17 @@ import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class ExpedientePerfilPage extends StatelessWidget {
-  final ExpedienteModel expediente;
-
-  const ExpedientePerfilPage({Key? key, required this.expediente})
-      : super(key: key);
-
+class ExpedientePerfilPage extends StatelessWidget { 
   @override
   Widget build(BuildContext context) {
+    final providerExpediente = Provider.of<ExpedientesProvider>(context);
     return Scaffold(
       body: Container(
         color: temaApp.backgroundColor,
         child: Stack(
           children: [
             HeaderBackGround(),
-            SafeArea(child: Body(expediente)),
+            SafeArea(child: Body(providerExpediente.expeidnteSeleted!)),
           ],
         ),
       ),
@@ -294,8 +290,7 @@ class AppBardCustomer extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              providerExpediente.expeidnteSeleted = expedinte.copy();
+            onTap: () { 
               Navigator.push(
                 context,
                 MaterialPageRoute(
