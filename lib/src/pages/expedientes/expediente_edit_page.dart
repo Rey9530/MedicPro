@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
-import 'package:medicpro/src/ui/input_decorations.dart';
+import 'package:medicpro/src/ui/input_decorations.dart'; 
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +23,6 @@ class ExpedienteEditePage extends StatefulWidget {
 
 class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
   late DateTime dateTime;
-
   @override
   Widget build(BuildContext context) {
     final providerExpediente = Provider.of<ExpedientesProvider>(context);
@@ -200,11 +199,15 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
                                 : () async {
                                     //final String? imgUrl = await producService.uploadImage();
                                     //if (imgUrl != null) pruducForm.produc.picture = imgUrl;
+ 
                                     bool resp = await providerExpediente
                                         .saveOrUpdate(providerExpediente
                                             .expeidnteSeleted!);
                                     if (resp) {
                                       Navigator.of(context).pop();
+                                    } else {
+                                      showAlertDialog(context, "Excelente",
+                                          "Datos Procesados correctamente");
                                     }
                                   },
                           )
@@ -423,13 +426,13 @@ class _ModalFitState extends State<ModalFit> {
             titulo: 'Camara',
             icon: FontAwesomeIcons.camera,
             funcion: () async {
-              Navigator.of(context).pop(); 
-              final picker = new ImagePicker();//ImagePicker.pickImage
+              Navigator.of(context).pop();
+              final picker = new ImagePicker(); //ImagePicker.pickImage
               XFile? pickedFile =
                   await picker.pickImage(source: ImageSource.camera);
               if (pickedFile == null) return;
               File file = File(pickedFile.path);
-              File? otherFile = await _cropImage(file.path) ;
+              File? otherFile = await _cropImage(file.path);
               if (otherFile == null) return;
               providerExpediente.updateFoto(otherFile.path);
               //providerExpediente.expeidnteSeleted!.foto = pickedFile.path;
@@ -445,7 +448,7 @@ class _ModalFitState extends State<ModalFit> {
                   source: ImageSource.gallery, imageQuality: 100);
               if (pickedFile == null) return;
               File file = File(pickedFile.path);
-              File? otherFile = await _cropImage(file.path) ;
+              File? otherFile = await _cropImage(file.path);
               if (otherFile == null) return;
               providerExpediente.updateFoto(otherFile.path);
             },
