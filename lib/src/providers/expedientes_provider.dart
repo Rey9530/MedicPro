@@ -53,20 +53,24 @@ class ExpedientesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future saveOrUpdate(ExpedienteModel expdiente) async {
+  Future<bool> saveOrUpdate(ExpedienteModel expdiente) async {
     this.isSavin = true;
     notifyListeners();
-    if (expdiente.token_expediente == null) {
+    bool resp = false;
+    if (expdiente.token_expediente == "0") {
       // Guardar Producto
       await saveExpediente(expdiente);
       NotificationsServices.showSnackbar("Datos Guardados");
+      resp = true;
     } else {
       // Actualizar Producto
       await updateExpediente(expdiente);
       NotificationsServices.showSnackbar("Datos Actualizados");
+      resp = false;
     }
     this.isSavin = false;
     notifyListeners();
+    return resp;
   }
 
   Future<String?> uploadImage(String token) async {
@@ -84,9 +88,7 @@ class ExpedientesProvider extends ChangeNotifier {
     newPictureFile = null;
     final streamedResponse = await imageUpload.send();
     final resp = await http.Response.fromStream(streamedResponse);
-    print(resp.body);
     final decodeData = json.decode(resp.body);
-    print(decodeData["data"]);
     return decodeData["data"];
   }
 
@@ -116,11 +118,18 @@ class ExpedientesProvider extends ChangeNotifier {
   }
 
   Future<String?> saveExpediente(ExpedienteModel expdiente) async {
-    final url = Uri.https(_baseUrl, '/core/api_rest/update_expedientes');
-    final resp = await http.post(url, body: expdiente.toJson());
+    String token = await dataUser.readToken();
+    final url = Uri.https(_baseUrl, '/core/api_rest/save_expedientes');
+    expdiente.token = token;
+    final resp = await http.post(url, body: expdiente.toSend());
     final dataResponse = json.decode(resp.body);
-    expdiente.token_expediente = dataResponse["token_expediente"];
+    expdiente.token_expediente = dataResponse["data"];
     this.lisExpdientes.add(expdiente);
+
+    if (this.newPictureFile != null) {
+      final String? img = await uploadImage(expdiente.token_expediente);
+      expdiente.foto = img!;
+    }
     return expdiente.token_expediente;
   }
 

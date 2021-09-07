@@ -4,6 +4,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
 import 'package:medicpro/src/providers/providers.dart';
@@ -178,7 +179,12 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 10),
-                              child: Text('Actualizar',
+                              child: Text(
+                                  (providerExpediente.expeidnteSeleted!
+                                              .token_expediente ==
+                                          "0")
+                                      ? 'Guardar'
+                                      : 'Actualizar',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -194,8 +200,12 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
                                 : () async {
                                     //final String? imgUrl = await producService.uploadImage();
                                     //if (imgUrl != null) pruducForm.produc.picture = imgUrl;
-                                    await providerExpediente.saveOrUpdate(
-                                        providerExpediente.expeidnteSeleted!);
+                                    bool resp = await providerExpediente
+                                        .saveOrUpdate(providerExpediente
+                                            .expeidnteSeleted!);
+                                    if (resp) {
+                                      Navigator.of(context).pop();
+                                    }
                                   },
                           )
                   ],
@@ -413,13 +423,15 @@ class _ModalFitState extends State<ModalFit> {
             titulo: 'Camara',
             icon: FontAwesomeIcons.camera,
             funcion: () async {
-              Navigator.of(context).pop();
-              print("Camara");
-              final picker = new ImagePicker();
-              final XFile? pickedFile = await picker.pickImage(
-                  source: ImageSource.camera, imageQuality: 100);
+              Navigator.of(context).pop(); 
+              final picker = new ImagePicker();//ImagePicker.pickImage
+              XFile? pickedFile =
+                  await picker.pickImage(source: ImageSource.camera);
               if (pickedFile == null) return;
-              providerExpediente.updateFoto(pickedFile.path);
+              File file = File(pickedFile.path);
+              File? otherFile = await _cropImage(file.path) ;
+              if (otherFile == null) return;
+              providerExpediente.updateFoto(otherFile.path);
               //providerExpediente.expeidnteSeleted!.foto = pickedFile.path;
             },
           ),
@@ -429,16 +441,56 @@ class _ModalFitState extends State<ModalFit> {
             funcion: () async {
               Navigator.of(context).pop();
               final picker = new ImagePicker();
-              final XFile? pickedFile = await picker.pickImage(
+              XFile? pickedFile = await picker.pickImage(
                   source: ImageSource.gallery, imageQuality: 100);
-              print(pickedFile);
               if (pickedFile == null) return;
-              providerExpediente.updateFoto(pickedFile.path);
+              File file = File(pickedFile.path);
+              File? otherFile = await _cropImage(file.path) ;
+              if (otherFile == null) return;
+              providerExpediente.updateFoto(otherFile.path);
             },
           ),
         ],
       ),
     ));
+  }
+
+  Future<File?> _cropImage(String path) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cortar',
+            toolbarColor: temaApp.primaryColor,
+            toolbarWidgetColor: temaApp.backgroundColor,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cortar 2',
+        ));
+
+    if (croppedFile != null) {
+      return croppedFile;
+    } else {
+      return null;
+    }
   }
 }
 
