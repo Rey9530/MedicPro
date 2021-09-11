@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:medicpro/src/helpers/debouncer.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/services/services.dart';
-import 'package:medicpro/src/themes/theme.dart';
+import 'package:medicpro/src/themes/theme.dart'; 
+import '../utils/variables.dart' as globalsVariables;
 
 class ExpedientesProvider extends ChangeNotifier {
-  String _baseUrl = "medicprohn.app";
+  String _baseUrl = globalsVariables.baseUrl;
   bool isLoading = false;
   bool isSavin = false;
   int _page = 0;

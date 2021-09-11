@@ -32,7 +32,7 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
         child: Column(
           children: [
             AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
-            _ImageExpediente(providerExpediente.expeidnteSeleted!.getImg),
+            _ImageExpediente(providerExpediente.expeidnteSeleted!.getImg,providerExpediente.expeidnteSeleted!.token_expediente),
             Container(
               margin: EdgeInsets.all(10),
               child: Form(
@@ -220,46 +220,7 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
       ),
     ));
   }
-}
-
-class AppBardCustomerEdit extends StatelessWidget {
-  final ExpedienteModel expedinte;
-  const AppBardCustomerEdit(this.expedinte);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: temaApp.primaryColor,
-      padding: EdgeInsets.only(left: 15, right: 15, top: 30),
-      width: double.infinity,
-      height: 80,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              width: 30,
-              height: 30,
-              child: FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              expedinte.nombre + "" + expedinte.apellido,
-              style: TextStyle(
-                  color: temaApp.backgroundColor, fontWeight: FontWeight.bold),
-              overflow: TextOverflow.ellipsis,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+} 
 
 class _Select2 extends StatelessWidget {
   final dynamic initialValue;
@@ -353,7 +314,8 @@ class _InputsExpediente extends StatelessWidget {
 
 class _ImageExpediente extends StatelessWidget {
   final String urlImagePerfil;
-  const _ImageExpediente(this.urlImagePerfil);
+  final String token_expediente;
+  const _ImageExpediente(this.urlImagePerfil, this.token_expediente);
 
   @override
   Widget build(BuildContext context) {
@@ -364,11 +326,14 @@ class _ImageExpediente extends StatelessWidget {
           Center(
             child: Stack(
               children: [
-                ImagenPerfil(
-                  urlImagePerfil: urlImagePerfil,
-                  height: 200,
-                  width: 200,
-                  radius: 125,
+                Hero(
+                  tag: this.token_expediente,
+                  child: ImagenPerfil(
+                    urlImagePerfil: urlImagePerfil,
+                    height: 200,
+                    width: 200,
+                    radius: 125,
+                  ),
                 ),
                 Positioned(
                   child: GestureDetector(

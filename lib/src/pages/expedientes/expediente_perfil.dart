@@ -54,11 +54,66 @@ class Opciones extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Opcion("Consultas", FontAwesomeIcons.hospitalAlt),
-              Opcion("Citas", FontAwesomeIcons.calendarCheck),
-              Opcion("Imagenes", FontAwesomeIcons.images),
-              Opcion("Documentos", FontAwesomeIcons.file),
-              Opcion("Archivos", FontAwesomeIcons.paperclip),
+              Opcion(
+                icono: FontAwesomeIcons.hospitalAlt,
+                titulo: "Consultas",
+                funcionEjecutar: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListadoConsultasPage(),
+                    ),
+                  );
+                },
+              ),
+              Opcion(
+                icono: FontAwesomeIcons.calendarCheck,
+                titulo: "Citas",
+                funcionEjecutar: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpedienteEditePage(),
+                    ),
+                  );
+                },
+              ),
+              Opcion(
+                icono: FontAwesomeIcons.images,
+                titulo: "Imagenes",
+                funcionEjecutar: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpedienteEditePage(),
+                    ),
+                  );
+                },
+              ),
+              Opcion(
+                icono: FontAwesomeIcons.file,
+                titulo: "Documentos",
+                funcionEjecutar: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpedienteEditePage(),
+                    ),
+                  );
+                },
+              ),
+              Opcion(
+                icono: FontAwesomeIcons.paperclip,
+                titulo: "Archivos",
+                funcionEjecutar: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpedienteEditePage(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -71,40 +126,47 @@ class Opciones extends StatelessWidget {
 class Opcion extends StatelessWidget {
   String titulo;
   IconData icono;
+  Function funcionEjecutar;
 
-  Opcion(this.titulo, this.icono);
+  Opcion(
+      {required this.titulo,
+      required this.icono,
+      required this.funcionEjecutar});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      width: double.infinity,
-      height: 50,
-      child: Material(
-        borderRadius: BorderRadius.circular(40),
-        elevation: 5,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                child: FaIcon(icono),
-                width: 30,
-                alignment: Alignment.center,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                titulo,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              FaIcon(FontAwesomeIcons.chevronRight),
-            ],
+    return GestureDetector(
+      onTap: () => this.funcionEjecutar(),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        width: double.infinity,
+        height: 50,
+        child: Material(
+          borderRadius: BorderRadius.circular(40),
+          elevation: 5,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  child: FaIcon(icono),
+                  width: 30,
+                  alignment: Alignment.center,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  titulo,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                FaIcon(FontAwesomeIcons.chevronRight),
+              ],
+            ),
           ),
         ),
       ),
@@ -219,12 +281,15 @@ class HeaderProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ImagenPerfil(
-            height: 125,
-            radius: 125,
-            urlImagePerfil: expediente.getImg,
-            width: 125,
-          ), 
+          Hero(
+            tag: expediente.token_expediente,
+            child: ImagenPerfil(
+              height: 125,
+              radius: 125,
+              urlImagePerfil: expediente.getImg,
+              width: 125,
+            ),
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
