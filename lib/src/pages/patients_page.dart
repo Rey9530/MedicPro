@@ -24,19 +24,25 @@ class PatientsPage extends StatelessWidget {
         actions: [_BotonBuscar()],
       ),
       backgroundColor: temaApp.backgroundColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListExpdientes(
-            listExpedientes: expedientesProvider.lisExpdientes,
-            hacellamada: () => expedientesProvider.getAllExpedientes(),
-          ),
-          (expedientesProvider.isLoading)
-              ? Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Center(child: CircularProgressIndicator()))
-              : Container()
-        ],
+      body: RefreshIndicator(
+        color: temaApp.primaryColor,
+        onRefresh: () {
+            return  expedientesProvider.getAllExpedientes( true ); 
+         },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListExpdientes(
+              listExpedientes: expedientesProvider.lisExpdientes,
+              hacellamada: () => expedientesProvider.getAllExpedientes(),
+            ),
+            (expedientesProvider.isLoading)
+                ? Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Center(child: CircularProgressIndicator()))
+                : Container()
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: temaApp.primaryColor,

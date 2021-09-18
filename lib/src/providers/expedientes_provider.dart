@@ -42,14 +42,20 @@ class ExpedientesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getAllExpedientes() async {
+  getAllExpedientes([bool reload = false]) async {
     if (this.isLoading) return;
-    this.isLoading = true;
+    this.isLoading = true; 
+    if(reload) this._page=0; 
     final data = await this
         ._getJsonData('/core/api_rest/get_all_expedientes', this._page);
     final popularResponse = ExpedientesModel.fromJson(data);
-    this.lisExpdientes = [...this.lisExpdientes, ...popularResponse.data];
-    this._page++;
+    if(reload){ 
+      this.lisExpdientes = popularResponse.data;
+      this._page=1;
+    }else{
+      this.lisExpdientes = [...this.lisExpdientes, ...popularResponse.data];
+      this._page++; 
+    }
     this.isLoading = false;
     notifyListeners();
   }
