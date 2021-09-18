@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/providers/providers.dart';
+import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,8 @@ class ListadoConsultasPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ExpedienteInformacion>(create: (_) => ExpedienteInformacion()),
+        ChangeNotifierProvider<ExpedienteInformacion>(
+            create: (_) => ExpedienteInformacion()),
       ],
       child: Scaffold(
         body: BodyListConsultas(),
@@ -25,41 +27,45 @@ class BodyListConsultas extends StatefulWidget {
 
 class _BodyListConsultasState extends State<BodyListConsultas> {
   @override
-  void initState() {
-    // TODO: implement initState
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final providerExpediente = Provider.of<ExpedientesProvider>(context);
-    final consultasList = Provider.of<ExpedienteInformacion>(context);
-    consultasList
-        .getAllConsultas(providerExpediente.expeidnteSeleted!.token_expediente);
+    final consultasList = Provider.of<ExpedienteInformacion>(context, listen: false);
+  
+
     return Column(
       children: [
         AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
-        Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: consultasList.consultas.length,
-            itemBuilder: (_, i) {
-              return _consultaItem(consultasList.consultas[i], i);
-            },
-          ),
+        FutureBuilder(
+        future: consultasList.getAllConsultas(providerExpediente.expeidnteSeleted!.token_expediente),
+          builder: (BuildContext context, AsyncSnapshot<List<Consulta>> snapshot) {
+            if(!snapshot.hasData){
+              return Expanded(
+                child: Center( 
+                  child: CircularProgressIndicator( color: temaApp.primaryColor, )
+                ),
+              );
+            }
+            
+            final List<Consulta> consultas = snapshot.data!;
+            return Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: consultas.length,
+                itemBuilder: (_, i) {
+                  return _consultaItem(consultas[i], i);
+                },
+              ),
+            );
+          },
         ),
+        
       ],
     );
   }
 
   _consultaItem(Consulta consultas, int i) {
     return Container(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Material(
         borderRadius: BorderRadius.circular(25),
         elevation: 5,
@@ -75,10 +81,12 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
           expandedAlignment: Alignment.centerLeft,
           children: <Widget>[
             ListTile(title: Text(consultas.medico)), //
-            Container(child: Icon(Icons.elderly_sharp))
           ],
           onExpansionChanged: (bool expanded) {
-            setState(() => consultas.isExpander = expanded);
+            setState(() {
+              consultas.isExpander = expanded;
+              print(consultas.isExpander);
+            });
           },
         ),
       ),
