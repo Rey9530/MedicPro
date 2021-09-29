@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
@@ -11,11 +10,16 @@ class AppBardCustomerEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.only( bottomLeft: Radius.circular(15), bottomRight:  Radius.circular(15)),
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15),
+        bottomRight: Radius.circular(15),
+      ),
       child: Container(
-        color: temaApp.primaryColor,
-        padding: EdgeInsets.only(left: 15, right: 15, top: 30),
+        padding: EdgeInsets.only(left: 15, right: 15, top: 30,),
         width: double.infinity,
+        decoration: BoxDecoration(
+          color: temaApp.primaryColor,
+        ),
         height: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +39,9 @@ class AppBardCustomerEdit extends StatelessWidget {
               child: Text(
                 expedinte.nombre + " " + expedinte.apellido,
                 style: TextStyle(
-                    color: temaApp.backgroundColor, fontWeight: FontWeight.bold),
+                  color: temaApp.backgroundColor,
+                  fontWeight: FontWeight.bold,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             )

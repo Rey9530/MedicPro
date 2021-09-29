@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicpro/src/models/models.dart';
@@ -16,9 +18,14 @@ class ExpedienteInformacion extends ChangeNotifier {
         ._getJsonData('/core/api_rest/get_consultas', token_expediente);
 
     final popularResponse = Consultas.fromJson(data);
-    this.consultas = popularResponse.data; 
-    print(this.consultas); 
+    this.consultas = popularResponse.data;  
     return this.consultas;
+  }
+  
+  Future<List> getIamgesExpedientes(String token_expediente) async {  
+    final data = await this._getJsonData('/core/api_rest/get_imagenes', token_expediente);
+    Map<String, dynamic> popularResponse = jsonDecode(data);  
+    return popularResponse["data"];
   }
 
   Future<String> _getJsonData(String endPoint,

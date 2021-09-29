@@ -184,6 +184,16 @@ class ExpedientesProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
+  Future<String> getListImagenes(String endPoint,[String token_expediente = ""]) async {
+    String token = await dataUser.readToken();
+    final url = Uri.https(_baseUrl, endPoint, {
+      'token_expediente': token_expediente,
+      'token': token,
+    });
+    final response = await http.get(url);
+    return response.body;
+  }
+
   Future<List<ExpedienteModel>> searchExpediente(String query) async {
     String token = await dataUser.readToken();
     final url = Uri.https(_baseUrl, '/core/api_rest/get_search_expedientes', {
