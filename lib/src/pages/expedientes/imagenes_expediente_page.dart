@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/pages/expedientes/expedientes_imagenes_datelle_page.dart';
+import 'package:medicpro/src/pages/pages.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/utils/variables.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class ImagenesExpdientesPage extends StatelessWidget {
@@ -17,14 +20,46 @@ class ImagenesExpdientesPage extends StatelessWidget {
           create: (_) => ExpedienteInformacion(),
         ),
       ],
-      child: Scaffold(
-        body: Stack(
-          children: [
-            FutureImages(
-                token_expediente:
-                    providerExpediente.expeidnteSeleted!.token_expediente),
-            AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
-          ],
+      child: Container(
+        child: CuerpoImagenes(providerExpediente: providerExpediente),
+      ),
+    );
+  }
+}
+
+class CuerpoImagenes extends StatelessWidget {
+  const CuerpoImagenes({
+    Key? key,
+    required this.providerExpediente,
+  }) : super(key: key);
+
+  final ExpedientesProvider providerExpediente;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          FutureImages(
+              token_expediente:
+                  providerExpediente.expeidnteSeleted!.token_expediente),
+          AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: temaApp.primaryColor,
+        child: FaIcon(
+          FontAwesomeIcons.camera,
+          color: temaApp.backgroundColor,
+        ),
+        onPressed: () => showMaterialModalBottomSheet(
+          expand: false,
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (context) => ModalFit(
+            perfil: false,
+            ruta: EditarImagenPage(),
+          ),
         ),
       ),
     );
@@ -60,7 +95,7 @@ class FutureImages extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context, _CrearRuta(ImagenesDetallePage(index, fotos)));
+                    context, CrearRuta(ImagenesDetallePage(index, fotos)));
               },
               child: new Container(
                 color: temaApp.primaryColor,
@@ -83,27 +118,6 @@ class FutureImages extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  Route _CrearRuta(pagina) {
-    return PageRouteBuilder(
-      pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) =>
-          pagina,
-      transitionDuration: Duration(milliseconds: 200),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final curveAniumation =
-            CurvedAnimation(parent: animation, curve: Curves.easeIn);
-        return ScaleTransition(
-          scale: Tween<double>(begin: 0.0, end: 1.0).animate(curveAniumation),
-          child: FadeTransition(
-            opacity:
-                Tween<double>(begin: 0.0, end: 1.0).animate(curveAniumation),
-            child: child,
-          ),
-        );
-      },
     );
   }
 }

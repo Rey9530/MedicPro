@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart'; 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
-import 'package:medicpro/src/models/models.dart';
-import 'package:medicpro/src/utils/variables.dart';
-import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';  
+import 'package:medicpro/src/utils/variables.dart'; 
 
 class ImagenesDetallePage extends StatefulWidget {
   final int index;

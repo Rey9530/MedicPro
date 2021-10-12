@@ -17,8 +17,11 @@ class ExpedientesProvider extends ChangeNotifier {
   List<ExpedienteModel> lisExpdientes = [];
   ExpedienteModel? expeidnteSeleted;
   File? newPictureFile;
+  String? optionPictureFile;// esta opcion por el momento solo esta para el modulo de imagenes
+  String? descripPictureFile;// esta opcion por el momento solo esta para el modulo de imagenes
   List<Map<String, dynamic>> listSexo = [];
   List<Map<String, dynamic>> listDocumentos = [];
+  List<Map<String, dynamic>> listTipeImages = [];
   List<Map<String, dynamic>> listeEstadosCivil = [];
   final dataUser = new AuthServices();
 
@@ -33,11 +36,14 @@ class ExpedientesProvider extends ChangeNotifier {
     this.getAllExpedientes();
     this.getSexo();
     this.getDocumentos();
+    this.getTipeImages();
     this.getListeEstadosCivil();
   }
 
-  updateFoto(String imagen) {
-    this.expeidnteSeleted!.foto = imagen;
+  updateFoto(String imagen, {bool perfil = true}) {
+    if(perfil){
+      this.expeidnteSeleted!.foto = imagen;
+    }
     this.newPictureFile = File.fromUri(Uri(path: imagen));
     notifyListeners();
   }
@@ -93,6 +99,28 @@ class ExpedientesProvider extends ChangeNotifier {
         await http.MultipartFile.fromPath('file', newPictureFile!.path);
     imageUpload.files.add(file);
     newPictureFile = null;
+    final streamedResponse = await imageUpload.send();
+    final resp = await http.Response.fromStream(streamedResponse);
+    final decodeData = json.decode(resp.body);
+    return decodeData["data"];
+  }
+
+  
+  Future<bool> uploadImages() async {
+    if (this.newPictureFile == null) return false;
+
+    final url =
+        Uri.parse("https://" + _baseUrl + "/core/api_rest/upload_images");
+    final imageUpload = http.MultipartRequest('POST', url)
+      ..fields["token_expediente"] = expeidnteSeleted!.token_expediente
+      ..fields["optionPictureFile"] = this.optionPictureFile!
+      ..fields["descripPictureFile"] = this.descripPictureFile!
+      ..fields["token"] = await dataUser.readToken();
+
+    final file =
+        await http.MultipartFile.fromPath('file', newPictureFile!.path);
+    imageUpload.files.add(file);
+    //newPictureFile = null;
     final streamedResponse = await imageUpload.send();
     final resp = await http.Response.fromStream(streamedResponse);
     final decodeData = json.decode(resp.body);
@@ -167,6 +195,20 @@ class ExpedientesProvider extends ChangeNotifier {
       this.listDocumentos.add(variebla);
     });
     //notifyListeners();
+  }
+
+  getTipeImages() async {
+    final data =
+        await this._getJsonData('/core/api_rest/get_all_tipo_images');
+    final popularResponse = TipoImagenes.fromJson(data);
+    popularResponse.data.forEach((element) {
+      final Map<String, dynamic> variebla = {
+        'value': element.idtipoimagen,
+        'label': element.tipoimagen,
+        'textStyle': TextStyle(color: temaApp.primaryColor),
+      };
+      this.listTipeImages.add(variebla);
+    }); 
   }
 
   getListeEstadosCivil() async {

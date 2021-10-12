@@ -31,7 +31,7 @@ class ImagenPerfil extends StatelessWidget {
         ),
       );
     return ClipRRect(
-      borderRadius: BorderRadius.circular(125),
+      borderRadius: BorderRadius.circular(this.radius),
       child: Image.file(
         File(urlImagePerfil),
         fit: BoxFit.cover,
