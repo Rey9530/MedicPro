@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicpro/src/themes/theme.dart';
 
-void showAlertDialog(BuildContext context, String titulo, String subtitulo) {
+showAlertDialog(BuildContext context, String titulo, String subtitulo) async {
   // set up the button
   Widget okButton = TextButton(
     child: Text("OK"),
@@ -24,7 +24,7 @@ void showAlertDialog(BuildContext context, String titulo, String subtitulo) {
     content: Container( width: double.infinity, height: 15, child: Center(child: Text(subtitulo))),
     elevation: 24,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      borderRadius: const BorderRadius.all(Radius.circular(20.0)),
     ),
     actions: [
       okButton,

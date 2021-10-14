@@ -38,14 +38,22 @@ class CuerpoImagenes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          FutureImages(
-              token_expediente:
-                  providerExpediente.expeidnteSeleted!.token_expediente),
-          AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
-        ],
-      ),
+      body: (providerExpediente.isSavin)
+          ? Center(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: temaApp.primaryColor,
+                ),
+              ),
+            )
+          : Stack(
+              children: [
+                FutureImages(
+                    token_expediente:
+                        providerExpediente.expeidnteSeleted!.token_expediente),
+                AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: temaApp.primaryColor,
         child: FaIcon(

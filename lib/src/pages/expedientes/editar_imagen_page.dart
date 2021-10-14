@@ -62,13 +62,13 @@ class EditarImagenPage extends StatelessWidget {
                 onPressed: providerExpediente.isSavin
                     ? null
                     : () async {
-                        bool resp = await providerExpediente.uploadImages();
-                        if (resp) {
+                        final resp = await providerExpediente.uploadImages(); 
+                        if (resp["data"]) {
+                          //showAlertDialog(context, "Excelente", "Datos Procesados correctamente");  
                           Navigator.of(context).pop();
                         } else {
-                          showAlertDialog(context, "Excelente",
-                              "Datos Procesados correctamente"); 
-                          Navigator.of(context).pop();
+                          await showAlertDialog(context, "Error", "Error:"+resp["msj"]); 
+                          //Navigator.of(context).pop();
                         }
                       },
               ),

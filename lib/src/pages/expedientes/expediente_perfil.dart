@@ -97,7 +97,7 @@ class Opciones extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ExpedienteEditePage(),
+                      builder: (context) => ExpedientesDocumentosPage(),
                     ),
                   );
                 },

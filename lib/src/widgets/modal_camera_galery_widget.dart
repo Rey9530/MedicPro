@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,12 +7,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:medicpro/src/pages/pages.dart';
+import 'package:provider/provider.dart'; 
+
 class ModalFit extends StatefulWidget {
-  bool perfil ;
+  bool perfil;
   dynamic ruta;
-  ModalFit( {this.perfil = true, this.ruta =  Container } ) ;
+  ModalFit({this.perfil = true, this.ruta = Container});
   @override
   _ModalFitState createState() => _ModalFitState();
 }
@@ -32,40 +31,56 @@ class _ModalFitState extends State<ModalFit> {
             titulo: 'Camara',
             icon: FontAwesomeIcons.camera,
             funcion: () async {
+             // Navigator.of(context).pop();
+              providerExpediente.updateisSavin(true);
               final picker = new ImagePicker(); //ImagePicker.pickImage
               XFile? pickedFile =
                   await picker.pickImage(source: ImageSource.camera);
-              if (pickedFile == null) return;
+              if (pickedFile == null) {
+                providerExpediente.updateisSavin(false);
+                return false;
+              }
               File file = File(pickedFile.path);
               File? otherFile = await _cropImage(file.path);
-              if (otherFile == null) return; 
-              providerExpediente.updateFoto(otherFile.path, perfil: widget.perfil ); 
-              if(!widget.perfil){
-                Navigator.of(context).pop();
-                Navigator.push(context, CrearRuta( widget.ruta ));
-              }else{
+              if (otherFile == null) {
+                providerExpediente.updateisSavin(false);
+                return false;
+              }
+              providerExpediente.updateFoto(otherFile.path, perfil: widget.perfil);
+              if (!widget.perfil) {
+                Navigator.push(context, CrearRuta(widget.ruta));
+              } else {
                 Navigator.of(context).pop();
               }
+              providerExpediente.updateisSavin(false);
             },
           ),
           IconoBottomModal(
             titulo: 'Galeria',
             icon: FontAwesomeIcons.images,
             funcion: () async {
-              Navigator.of(context).pop();
+              //Navigator.of(context).pop();
+                providerExpediente.updateisSavin(true);
               final picker = new ImagePicker();
               XFile? pickedFile = await picker.pickImage(
                   source: ImageSource.gallery, imageQuality: 100);
-              if (pickedFile == null) return;
+              if (pickedFile == null) {
+                providerExpediente.updateisSavin(false);
+                return false;
+              }
               File file = File(pickedFile.path);
               File? otherFile = await _cropImage(file.path);
-              if (otherFile == null) return;
-              providerExpediente.updateFoto(otherFile.path, perfil: widget.perfil ); 
-              if(!widget.perfil){
-                Navigator.push(context, CrearRuta( widget.ruta ));
-              }else{
+              if (otherFile == null) {
+                providerExpediente.updateisSavin(false);
+                return false;
+              }
+              providerExpediente.updateFoto(otherFile.path, perfil: widget.perfil);
+              if (!widget.perfil) {
+                Navigator.push(context, CrearRuta(widget.ruta));
+              } else {
                 Navigator.of(context).pop();
               }
+                providerExpediente.updateisSavin(false);
             },
           ),
         ],

@@ -18,7 +18,7 @@ class ExpedientesProvider extends ChangeNotifier {
   ExpedienteModel? expeidnteSeleted;
   File? newPictureFile;
   String? optionPictureFile;// esta opcion por el momento solo esta para el modulo de imagenes
-  String? descripPictureFile;// esta opcion por el momento solo esta para el modulo de imagenes
+  String descripPictureFile="";// esta opcion por el momento solo esta para el modulo de imagenes
   List<Map<String, dynamic>> listSexo = [];
   List<Map<String, dynamic>> listDocumentos = [];
   List<Map<String, dynamic>> listTipeImages = [];
@@ -38,6 +38,11 @@ class ExpedientesProvider extends ChangeNotifier {
     this.getDocumentos();
     this.getTipeImages();
     this.getListeEstadosCivil();
+  }
+
+  updateisSavin(bool status) {
+    this.isSavin = status;
+    notifyListeners();
   }
 
   updateFoto(String imagen, {bool perfil = true}) {
@@ -106,7 +111,7 @@ class ExpedientesProvider extends ChangeNotifier {
   }
 
   
-  Future<bool> uploadImages() async {
+  Future uploadImages() async {
     if (this.newPictureFile == null) return false;
 
     final url =
@@ -114,7 +119,7 @@ class ExpedientesProvider extends ChangeNotifier {
     final imageUpload = http.MultipartRequest('POST', url)
       ..fields["token_expediente"] = expeidnteSeleted!.token_expediente
       ..fields["optionPictureFile"] = this.optionPictureFile!
-      ..fields["descripPictureFile"] = this.descripPictureFile!
+      ..fields["descripPictureFile"] = this.descripPictureFile
       ..fields["token"] = await dataUser.readToken();
 
     final file =
@@ -122,9 +127,9 @@ class ExpedientesProvider extends ChangeNotifier {
     imageUpload.files.add(file);
     //newPictureFile = null;
     final streamedResponse = await imageUpload.send();
-    final resp = await http.Response.fromStream(streamedResponse);
-    final decodeData = json.decode(resp.body);
-    return decodeData["data"];
+    final resp = await http.Response.fromStream(streamedResponse); 
+    final decodeData = json.decode(resp.body); 
+    return decodeData;
   }
 
   Future<String> _getJsonData(String endPoint, [int pagina = 0]) async {
@@ -148,7 +153,9 @@ class ExpedientesProvider extends ChangeNotifier {
       final String? img = await uploadImage(expdiente.token_expediente);
       expdiente.foto = img!;
     }
-    this.lisExpdientes[index] = expdiente;
+    if(index>-1){
+      this.lisExpdientes[index] = expdiente;
+    } 
     return expdiente.token_expediente;
   }
 
