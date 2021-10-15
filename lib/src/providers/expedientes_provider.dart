@@ -113,7 +113,8 @@ class ExpedientesProvider extends ChangeNotifier {
   
   Future uploadImages() async {
     if (this.newPictureFile == null) return false;
-
+    this.isSavin = true;
+    notifyListeners();
     final url =
         Uri.parse("https://" + _baseUrl + "/core/api_rest/upload_images");
     final imageUpload = http.MultipartRequest('POST', url)
@@ -129,6 +130,8 @@ class ExpedientesProvider extends ChangeNotifier {
     final streamedResponse = await imageUpload.send();
     final resp = await http.Response.fromStream(streamedResponse); 
     final decodeData = json.decode(resp.body); 
+    this.isSavin = false;
+    notifyListeners();
     return decodeData;
   }
 

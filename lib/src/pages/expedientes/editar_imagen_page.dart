@@ -34,7 +34,8 @@ class EditarImagenPage extends StatelessWidget {
                 label: 'Tipo Imagen',
                 placeholder: 'Seleccione...',
                 prefix: FontAwesomeIcons.fileAlt,
-                validacion: (valor) => providerExpediente.optionPictureFile = valor,
+                validacion: (valor) =>
+                    providerExpediente.optionPictureFile = valor,
               ),
             ),
             InputsExpediente(
@@ -42,36 +43,52 @@ class EditarImagenPage extends StatelessWidget {
               placeholder: 'Digite una descripción (Opcional)',
               prefix: FontAwesomeIcons.textHeight,
               keyboardType: TextInputType.streetAddress,
-              validacion: (valor) => providerExpediente.descripPictureFile = valor,
+              validacion: (valor) =>
+                  providerExpediente.descripPictureFile = valor,
               valor: providerExpediente.expeidnteSeleted!.domicilio.toString(),
               maxLines: 3,
             ),
             Container(
-                margin: const EdgeInsets.only(top: 50),
-              child: MaterialButton(
-                disabledColor: temaApp.primaryColor,
-                elevation: 5,
-                child: Container(
-                  padding: const  EdgeInsets.symmetric(horizontal: 80, vertical: 10),
-                  child: Text('Guardar', style: TextStyle( color: temaApp.backgroundColor ),),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                color: temaApp.primaryColor,
-                onPressed: providerExpediente.isSavin
-                    ? null
-                    : () async {
-                        final resp = await providerExpediente.uploadImages(); 
-                        if (resp["data"]) {
-                          //showAlertDialog(context, "Excelente", "Datos Procesados correctamente");  
-                          Navigator.of(context).pop();
-                        } else {
-                          await showAlertDialog(context, "Error", "Error:"+resp["msj"]); 
-                          //Navigator.of(context).pop();
-                        }
-                      },
-              ),
+              margin: const EdgeInsets.only(top: 50),
+              child: (providerExpediente.isSavin)
+                  ? Center(
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: CircularProgressIndicator(
+                          color: temaApp.primaryColor,
+                        ),
+                      ),
+                    )
+                  : MaterialButton(
+                      disabledColor: temaApp.primaryColor,
+                      elevation: 5,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 80, vertical: 10),
+                        child: Text(
+                          'Guardar',
+                          style: TextStyle(color: temaApp.backgroundColor),
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      color: temaApp.primaryColor,
+                      onPressed: providerExpediente.isSavin
+                          ? null
+                          : () async {
+                              final resp =
+                                  await providerExpediente.uploadImages();
+                              if (resp["data"]) {
+                                //showAlertDialog(context, "Excelente", "Datos Procesados correctamente");
+                                Navigator.of(context).pop();
+                              } else {
+                                await showAlertDialog(
+                                    context, "Error", "Error:" + resp["msj"]);
+                                //Navigator.of(context).pop();
+                              }
+                            },
+                    ),
             )
           ],
         ),

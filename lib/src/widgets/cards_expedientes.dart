@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/expedientes_model.dart';
 import 'package:medicpro/src/pages/pages.dart';
 import 'package:medicpro/src/providers/providers.dart';
+import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class CardsExpedintes extends StatelessWidget {
@@ -33,18 +34,8 @@ class CardsExpedintes extends StatelessWidget {
             ),
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(50.0),
-              child: FadeInImage(
-                placeholder: AssetImage("assets/imgs/no-image.png"),
-                image: NetworkImage(expdiente.getImg),
-                fadeInCurve: Curves.easeIn,
-                fadeInDuration: Duration(seconds: 1),
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset('assets/imgs/no-image.png');
-                },
-              ),
+              child: ImagenEnRed(fit: BoxFit.cover, height: 50, img: expdiente.getImg, width: 50,),
+ 
             ),
             trailing: FaIcon(FontAwesomeIcons.chevronRight),
             title: Text(expdiente.nombre + " " + expdiente.apellido),

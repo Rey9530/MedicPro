@@ -82,8 +82,7 @@ class FutureImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final consultasList =
-        Provider.of<ExpedienteInformacion>(context, listen: false);
+    final consultasList =  Provider.of<ExpedienteInformacion>(context, listen: false);
     return Container(
       margin: const EdgeInsets.only(top: 50),
       child: FutureBuilder(
@@ -97,6 +96,16 @@ class FutureImages extends StatelessWidget {
             );
           }
           final List fotos = snapshot.data!;
+
+          if (fotos.length == 0) {
+            return Center(
+              child: FaIcon(
+                FontAwesomeIcons.images,
+                size: 80,
+                color: Colors.black12,
+              ),
+            );
+          }
           return new StaggeredGridView.countBuilder(
             crossAxisCount: 4,
             itemCount: fotos.length,
@@ -106,15 +115,14 @@ class FutureImages extends StatelessWidget {
                     context, CrearRuta(ImagenesDetallePage(index, fotos)));
               },
               child: new Container(
-                color: temaApp.primaryColor,
                 child: Hero(
                   tag: fotos[index]["imagen"],
-                  child: FadeInImage(
-                    placeholder: AssetImage("assets/imgs/no-image.png"),
-                    image: NetworkImage(
-                      baseUrlSsl + fotos[index]["imagen"],
-                    ),
+                  child: ImagenEnRed(
                     fit: BoxFit.cover,
+                    height: 50,
+                    width: 50,
+                    img: baseUrlSsl + fotos[index]["imagen"],
+                    center: true,
                   ),
                 ),
               ),

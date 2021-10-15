@@ -8,4 +8,6 @@ export 'package:medicpro/src/widgets/modal_camera_galery_widget.dart';
 export 'package:medicpro/src/widgets/rutas_widget.dart';
 export 'package:medicpro/src/widgets/select_widget.dart';
 export 'package:medicpro/src/widgets/inputs_widget.dart';
+export 'package:medicpro/src/widgets/image_network_widget.dart';
+
 
