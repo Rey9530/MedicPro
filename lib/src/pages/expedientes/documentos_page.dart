@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
+import 'package:medicpro/src/pages/pages.dart'; 
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
@@ -64,9 +65,19 @@ class ListDocumentos extends StatelessWidget {
           scrollDirection: Axis.vertical,
           itemCount: documentos.length,
           itemBuilder: (_, i) {
-            return ListTile( 
-              leading: FaIcon( FontAwesomeIcons.filePdf ),
-              title: Text( documentos[i].tipoplantilla ),
+            return GestureDetector(
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PDFViewer( documentos[i].tkDocumento,documentos[i].tipoplantilla ),
+                    ),
+                  );
+              },
+              child: ListTile( 
+                leading: FaIcon( FontAwesomeIcons.filePdf ),
+                title: Text( documentos[i].tipoplantilla ),
+              ),
             );
           },
         );
