@@ -63,18 +63,18 @@ class ListDocumentos extends StatelessWidget {
               child: CircularProgressIndicator(
             color: temaApp.primaryColor,
           ));
-        } 
+        }
         final List<ExpDocumento> documentos = snapshot.data!;
 
         if (documentos.length == 0) {
-            return Center(
-              child: FaIcon(
-                FontAwesomeIcons.filePdf,
-                size: 80,
-                color: Colors.black12,
-              ),
-            );
-          }
+          return Center(
+            child: FaIcon(
+              FontAwesomeIcons.filePdf,
+              size: 80,
+              color: Colors.black12,
+            ),
+          );
+        }
 
         return ListView.builder(
           scrollDirection: Axis.vertical,
@@ -90,9 +90,17 @@ class ListDocumentos extends StatelessWidget {
                   ),
                 );
               },
-              child: ListTile(
-                leading: FaIcon(FontAwesomeIcons.filePdf),
-                title: Text(documentos[i].tipoplantilla),
+              child: Container( 
+                margin: const EdgeInsets.all(10),
+                
+                child: Material(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: FaIcon(FontAwesomeIcons.filePdf),
+                    title: Text(documentos[i].tipoplantilla),
+                  ),
+                ),
               ),
             );
           },
