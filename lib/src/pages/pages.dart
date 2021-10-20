@@ -13,4 +13,5 @@ export 'package:medicpro/src/pages/expedientes/editar_imagen_page.dart';
 export 'package:medicpro/src/pages/expedientes/documentos_page.dart';
 export 'package:medicpro/src/pages/expedientes/pdf_view_page.dart';
 export 'package:medicpro/src/pages/expedientes/archivos_page.dart';
+export 'package:medicpro/src/pages/splash_page.dart';
 

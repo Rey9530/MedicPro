@@ -27,6 +27,7 @@ class ExpedientesProvider extends ChangeNotifier {
 
   final debouncer = Debouncer(duration: Duration(milliseconds: 500));
 
+  // ignore: close_sinks
   final StreamController<List<ExpedienteModel>> _suggestionStreamControler =
       new StreamController.broadcast();
   Stream<List<ExpedienteModel>> get suggestonStream =>
@@ -236,10 +237,10 @@ class ExpedientesProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
-  Future<String> getListImagenes(String endPoint,[String token_expediente = ""]) async {
+  Future<String> getListImagenes(String endPoint,[String tokenExpediente = ""]) async {
     String token = await dataUser.readToken();
     final url = Uri.https(_baseUrl, endPoint, {
-      'token_expediente': token_expediente,
+      'token_expediente': tokenExpediente,
       'token': token,
     });
     final response = await http.get(url);
