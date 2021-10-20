@@ -49,7 +49,7 @@ class CuerpoImagenes extends StatelessWidget {
           : Stack(
               children: [
                 FutureImages(
-                    token_expediente:
+                    tokenExpediente:
                         providerExpediente.expeidnteSeleted!.token_expediente),
                 AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
               ],
@@ -75,9 +75,9 @@ class CuerpoImagenes extends StatelessWidget {
 }
 
 class FutureImages extends StatelessWidget {
-  final String token_expediente;
+  final String tokenExpediente;
   const FutureImages({
-    required this.token_expediente,
+    required this.tokenExpediente,
   });
 
   @override
@@ -86,7 +86,7 @@ class FutureImages extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 50),
       child: FutureBuilder(
-        future: consultasList.getIamgesExpedientes(this.token_expediente),
+        future: consultasList.getIamgesExpedientes(this.tokenExpediente),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
               return LoadingIndicater(); 

@@ -318,8 +318,7 @@ class AppBardCustomer extends StatelessWidget {
   const AppBardCustomer(this.expedinte);
 
   @override
-  Widget build(BuildContext context) {
-    final providerExpediente = Provider.of<ExpedientesProvider>(context);
+  Widget build(BuildContext context) { 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15),
       width: double.infinity,

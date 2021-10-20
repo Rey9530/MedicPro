@@ -45,7 +45,7 @@ class ExpedientesSeach extends SearchDelegate{
     );
   }
   
-  Widget Buscando() {
+  Widget buscando() {
     return Container(
       child: Center(
         child: CircularProgressIndicator(),
@@ -64,10 +64,10 @@ class ExpedientesSeach extends SearchDelegate{
     return StreamBuilder(
         stream: expedientesProvider.suggestonStream,
         builder: (_, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) return Buscando();
+          if (!snapshot.hasData) return buscando();
           final listmovies = snapshot.data;
           return (listmovies.length==0) 
-          ? Buscando()
+          ? buscando()
           :ListView.builder(
             itemCount: listmovies.length,
             itemBuilder: (_, index) => GestureDetector( onTap: ()=> close(context, null) , child: CardsExpedintes(expdiente: listmovies[index])),

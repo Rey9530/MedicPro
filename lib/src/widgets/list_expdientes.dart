@@ -16,14 +16,12 @@ class _ListExpdientesState extends State<ListExpdientes> {
   final ScrollController scrollController = new ScrollController();
 
   @override
-  void initState() {
-    // TODO: implement initState
+  void initState() { 
     super.initState();
 
     scrollController.addListener(() {
       if ((scrollController.position.maxScrollExtent - 50) <=
-          scrollController.position.pixels) {
-        //TODO
+          scrollController.position.pixels) { 
         widget.hacellamada();
       }
     });

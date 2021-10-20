@@ -43,14 +43,14 @@ class ArchivosWidgetPage extends StatelessWidget {
 }
 
 class ArchivosExp extends StatelessWidget {
-  final String token_expediente;
-  const ArchivosExp(this.token_expediente);
+  final String tokenExpediente;
+  const ArchivosExp(this.tokenExpediente);
   @override
   Widget build(BuildContext context) {
     final informacion =
         Provider.of<ExpedienteInformacion>(context, listen: false);
     return FutureBuilder(
-      future: informacion.getArchivos(this.token_expediente),
+      future: informacion.getArchivos(this.tokenExpediente),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {
           return LoadingIndicater();

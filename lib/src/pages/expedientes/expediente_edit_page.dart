@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -224,8 +222,8 @@ class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
 
 class _ImageExpediente extends StatelessWidget {
   final String urlImagePerfil;
-  final String token_expediente;
-  const _ImageExpediente(this.urlImagePerfil, this.token_expediente);
+  final String tokenExpediente;
+  const _ImageExpediente(this.urlImagePerfil, this.tokenExpediente);
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +235,7 @@ class _ImageExpediente extends StatelessWidget {
             child: Stack(
               children: [
                 Hero(
-                  tag: this.token_expediente,
+                  tag: this.tokenExpediente,
                   child: ImagenPerfil(
                     urlImagePerfil: urlImagePerfil,
                     height: 200,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: non_constant_identifier_names
 Route CrearRuta(pagina) {
   return PageRouteBuilder(
     pageBuilder: (BuildContext context, Animation<double> animation,

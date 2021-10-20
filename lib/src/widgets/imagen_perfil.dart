@@ -12,6 +12,7 @@ class ImagenPerfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unnecessary_null_comparison
     if (urlImagePerfil == null)
       return ClipRRect(
         borderRadius: BorderRadius.circular(125),

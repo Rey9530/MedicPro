@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'; 
 import 'package:provider/provider.dart';
-import 'package:medicpro/src/pages/pages.dart';
+// import 'package:medicpro/src/pages/pages.dart';
 import 'package:medicpro/src/services/services.dart'; 
  
 
@@ -18,7 +18,7 @@ class CheckAuthPage extends StatelessWidget {
             if ( !snapshot.hasData )            
               return Text('Aguanta');
 
-            if ( snapshot.data == '' ) {
+            /*if ( snapshot.data == '' ) {
               Future.microtask(() { 
                 Navigator.pushReplacement(context, PageRouteBuilder(
                   pageBuilder: ( _, __ , ___ ) => LoginApp(),
@@ -34,8 +34,8 @@ class CheckAuthPage extends StatelessWidget {
                   )
                 ); 
               });
-            } 
-            return Container(); 
+            } */
+            return Text('Aguanta'); 
           },
         ),
      ),

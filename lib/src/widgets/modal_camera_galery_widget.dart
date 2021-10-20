@@ -9,6 +9,7 @@ import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart'; 
 
+// ignore: must_be_immutable
 class ModalFit extends StatefulWidget {
   bool perfil;
   dynamic ruta;
