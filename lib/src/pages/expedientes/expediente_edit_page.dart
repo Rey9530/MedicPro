@@ -4,15 +4,15 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
-import 'package:medicpro/src/ui/input_decorations.dart';
+// import 'package:medicpro/src/ui/input_decorations.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:select_form_field/select_form_field.dart';
+// import 'package:select_form_field/select_form_field.dart';
 
 class ExpedienteEditePage extends StatefulWidget {
   const ExpedienteEditePage();

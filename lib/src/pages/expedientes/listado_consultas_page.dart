@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/themes/theme.dart';
@@ -47,6 +48,18 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
             }
             
             final List<Consulta> consultas = snapshot.data!;
+
+             if (consultas.length == 0) {
+                return Expanded(
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.notesMedical,
+                      size: 80,
+                      color: Colors.black12,
+                    ),
+                  ),
+                );
+              }
             return Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
