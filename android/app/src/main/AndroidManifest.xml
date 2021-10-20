@@ -2,8 +2,8 @@
     package="com.medicpro.cloud.medicpro">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="medicpro"
-        android:icon="@mipmap/ic_launcher">
+        android:label="MedicPro"
+        android:icon="@mipmap/launcher_icon">
         <activity
           android:name="com.yalantis.ucrop.UCropActivity"
           android:screenOrientation="portrait"
