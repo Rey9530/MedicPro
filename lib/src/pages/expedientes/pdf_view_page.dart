@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:share/share.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:medicpro/src/themes/theme.dart';
-import 'package:medicpro/src/utils/variables.dart';
+import 'package:medicpro/src/themes/theme.dart'; 
 
 class PDFViewer extends StatelessWidget {
-  final String tk;
+  final String urlBase;
   final String title;
-  const PDFViewer(this.tk, this.title);
+  const PDFViewer(this.urlBase, this.title);
   @override
   Widget build(BuildContext context) {
     String url = "";
@@ -38,10 +37,7 @@ class PDFViewer extends StatelessWidget {
         ],
       ),
       body: const PDF().cachedFromUrl(
-        baseUrlSsl +
-            "clinica/documentos/imprimir?select=1&id=" +
-            tk +
-            "&carta=true",
+        urlBase ,
         placeholder: (progress) {
           return Center(child: Text('$progress %'));
         },

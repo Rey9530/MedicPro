@@ -51,13 +51,7 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
 
              if (consultas.length == 0) {
                 return Expanded(
-                  child: Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.notesMedical,
-                      size: 80,
-                      color: Colors.black12,
-                    ),
-                  ),
+                  child: LoadingIndicater(),
                 );
               }
             return Expanded(

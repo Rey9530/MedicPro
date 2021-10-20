@@ -12,3 +12,5 @@ export 'package:medicpro/src/pages/expedientes/expedientes_imagenes_datelle_page
 export 'package:medicpro/src/pages/expedientes/editar_imagen_page.dart';
 export 'package:medicpro/src/pages/expedientes/documentos_page.dart';
 export 'package:medicpro/src/pages/expedientes/pdf_view_page.dart';
+export 'package:medicpro/src/pages/expedientes/archivos_page.dart';
+

@@ -30,6 +30,14 @@ class ExpedienteInformacion extends ChangeNotifier {
     return  popularResponse.data;  
   }
   
+  Future<List<Archivo>> getArchivos(String token_expediente) async { 
+    this.isLoading = true;
+    final data = await this
+        ._getJsonData('/core/api_rest/get_archivos', token_expediente);
+    final response = ExpArchivos.fromJson(data);
+    return  response.data;  
+  }
+  
   Future<List> getIamgesExpedientes(String token_expediente) async {  
     final data = await this._getJsonData('/core/api_rest/get_imagenes', token_expediente);
     Map<String, dynamic> popularResponse = jsonDecode(data);  

@@ -6,3 +6,5 @@ export 'package:medicpro/src/models/consultas_model.dart';
 export 'package:medicpro/src/models/navigation_model.dart';
 export 'package:medicpro/src/models/tipos_imagenes_model.dart';
 export 'package:medicpro/src/models/expedientes_documentos_model.dart';
+export 'package:medicpro/src/models/expedientes_archivos_modek.dart';
+

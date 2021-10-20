@@ -1,8 +1,6 @@
-// To parse this JSON data, do
-//
-//     final expDocumentos = expDocumentosFromMap(jsonString);
-
 import 'dart:convert';
+
+import 'package:medicpro/src/utils/variables.dart';
 
 class ExpDocumentos {
     ExpDocumentos({
@@ -66,4 +64,8 @@ class ExpDocumento {
         "fecha": fecha,
         "tk_documento": tkDocumento,
     };
+
+    getUrl(){
+      return baseUrlSsl +"clinica/documentos/imprimir?select=1&id=" +this.tkDocumento +"&carta=true";
+    }
 }

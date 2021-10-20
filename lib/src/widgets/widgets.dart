@@ -9,5 +9,5 @@ export 'package:medicpro/src/widgets/rutas_widget.dart';
 export 'package:medicpro/src/widgets/select_widget.dart';
 export 'package:medicpro/src/widgets/inputs_widget.dart';
 export 'package:medicpro/src/widgets/image_network_widget.dart';
-
-
+export 'package:medicpro/src/widgets/loading_widget.dart';
+export 'package:medicpro/src/widgets/pdf_list_widget.dart';

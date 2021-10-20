@@ -89,11 +89,7 @@ class FutureImages extends StatelessWidget {
         future: consultasList.getIamgesExpedientes(this.token_expediente),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: temaApp.primaryColor,
-              ),
-            );
+              return LoadingIndicater(); 
           }
           final List fotos = snapshot.data!;
 
