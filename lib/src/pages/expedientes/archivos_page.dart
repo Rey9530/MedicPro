@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
+import 'package:medicpro/src/pages/pages.dart';
 import 'package:medicpro/src/providers/providers.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +36,7 @@ class ArchivosWidgetPage extends StatelessWidget {
         AppBardCustomerEdit(providerExpediente.expeidnteSeleted!),
         Container(
             margin: EdgeInsets.only(top: 60),
-            child: ArchivosExp(
-                providerExpediente.expeidnteSeleted!.token_expediente))
+            child: ArchivosExp( providerExpediente.expeidnteSeleted!.token_expediente))
       ],
     );
   }
@@ -71,13 +71,82 @@ class ArchivosExp extends StatelessWidget {
           itemCount: documentos.length,
           itemBuilder: (_, i) {
             String title = "N/A";
-            if(documentos[i].descripcion!=null){
-                title = documentos[i].descripcion!;
-            } 
-            return ViewListPdf(url:documentos[i].getUrl(), title: title );
+            if (documentos[i].descripcion != null) {
+              title = documentos[i].descripcion!;
+            }
+            if (documentos[i].tipo == "pdf") {
+              return ViewListPdf(url: documentos[i].getUrl(), title: title);
+            } else {
+              return ViewImages(url: documentos[i].getUrl(), title: title);
+            }
           },
         );
       },
+    );
+  }
+}
+
+class ViewImages extends StatelessWidget {
+  const ViewImages({
+    Key? key,
+    required this.url,
+    required this.title,
+  }) : super(key: key);
+
+  final String url;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewImage(url, this.title),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: Material(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          elevation: 5,
+          child: ListTile(
+            leading: FaIcon(FontAwesomeIcons.solidImage),
+            title: Text(this.title),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ViewImage extends StatelessWidget {
+  final String urlBase;
+  final String title;
+  const ViewImage(this.urlBase, this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    final query = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child:
+            ImagenEnRed(
+                fit: BoxFit.contain,
+                height: double.infinity,
+                width: query.width,
+                img: urlBase,
+                center: true,
+            ) 
+          ),
+          AppBarrImage(),
+        ],
+      ),
     );
   }
 }

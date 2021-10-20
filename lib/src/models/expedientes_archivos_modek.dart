@@ -41,6 +41,7 @@ class Archivo {
         required this.fecha,
         this.descripcion,
         required this.ruta,
+        required this.tipo,
         required this.tkDocumento,
     });
 
@@ -49,6 +50,7 @@ class Archivo {
     String fecha;
     String? descripcion;
     String ruta;
+    String tipo;
     String tkDocumento;
 
     factory Archivo.fromJson(String str) => Archivo.fromMap(json.decode(str));
@@ -61,6 +63,7 @@ class Archivo {
         fecha: json["fecha"],
         descripcion: json["descripcion"],
         ruta: json["ruta"],
+        tipo: json["tipo"],
         tkDocumento: json["tk_documento"],
     );
 
@@ -70,6 +73,7 @@ class Archivo {
         "fecha": fecha,
         "descripcion": descripcion,
         "ruta": ruta,
+        "tipo": tipo,
         "tk_documento": tkDocumento,
     };
 

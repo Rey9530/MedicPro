@@ -58,7 +58,7 @@ class _ImagenesDetallePageState extends State<ImagenesDetallePage> {
               },
             ),
           ),
-          AppBarrImage(widget.fotos),
+          AppBarrImage( ),
         ],
       ),
     );
@@ -66,10 +66,9 @@ class _ImagenesDetallePageState extends State<ImagenesDetallePage> {
 }
 
 class AppBarrImage extends StatelessWidget {
-  
-  final fotos;
+   
 
-  const AppBarrImage(this.fotos );
+  const AppBarrImage(  );
 
   @override
   Widget build(BuildContext context) { 

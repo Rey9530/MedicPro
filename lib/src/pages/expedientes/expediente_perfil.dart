@@ -65,19 +65,7 @@ class Opciones extends StatelessWidget {
                     ),
                   );
                 },
-              ),
-              Opcion(
-                icono: FontAwesomeIcons.calendarCheck,
-                titulo: "Citas",
-                funcionEjecutar: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ExpedienteEditePage(),
-                    ),
-                  );
-                },
-              ),
+              ), 
               Opcion(
                 icono: FontAwesomeIcons.images,
                 titulo: "Imagenes",
