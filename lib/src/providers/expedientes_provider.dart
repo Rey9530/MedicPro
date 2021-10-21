@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:medicpro/src/helpers/debouncer.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/services/services.dart';
-import 'package:medicpro/src/themes/theme.dart'; 
+import 'package:medicpro/src/themes/theme.dart';
+import 'package:medicpro/src/utils/variables.dart'; 
 import '../utils/variables.dart' as globalsVariables;
 
 class ExpedientesProvider extends ChangeNotifier {
@@ -95,8 +96,8 @@ class ExpedientesProvider extends ChangeNotifier {
   Future<String?> uploadImage(String token) async {
     if (this.newPictureFile == null) return null;
 
-    final url =
-        Uri.parse("https://" + _baseUrl + "/core/api_rest/upload_image");
+    final url = //baseUrlSsl
+        Uri.parse( baseUrlSsl + "api_rest/upload_image");
     final imageUpload = http.MultipartRequest('POST', url)
       ..fields["token_expediente"] = token
       ..fields["token"] = await dataUser.readToken();
@@ -117,7 +118,7 @@ class ExpedientesProvider extends ChangeNotifier {
     this.isSavin = true;
     notifyListeners();
     final url =
-        Uri.parse("https://" + _baseUrl + "/core/api_rest/upload_images");
+        Uri.parse(baseUrlSsl + "api_rest/upload_images");
     final imageUpload = http.MultipartRequest('POST', url)
       ..fields["token_expediente"] = expeidnteSeleted!.token_expediente
       ..fields["optionPictureFile"] = this.optionPictureFile!

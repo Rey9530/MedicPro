@@ -11,15 +11,9 @@ import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 // import 'package:select_form_field/select_form_field.dart';
+ 
 
-class ExpedienteEditePage extends StatefulWidget {
-  const ExpedienteEditePage();
-  @override
-  _ExpedienteEditePageState createState() => _ExpedienteEditePageState();
-}
-
-class _ExpedienteEditePageState extends State<ExpedienteEditePage> {
-  late DateTime dateTime;
+class ExpedienteEditePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final providerExpediente = Provider.of<ExpedientesProvider>(context);
