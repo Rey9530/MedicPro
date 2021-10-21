@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/providers/providers.dart';
@@ -59,7 +60,11 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
                 scrollDirection: Axis.vertical,
                 itemCount: consultas.length,
                 itemBuilder: (_, i) {
-                  return _consultaItem(consultas[i], i);
+                  String url = consultas[i].getUrl();
+                  if(consultas[i].ruta==null || consultas[i].ruta==""){
+                      url = "N/A";
+                  }
+                  return ViewListPdf(url:url, title: consultas[i].fecha+" (${ consultas[i].tipoFicha }) ");
                 },
               ),
             );
@@ -76,24 +81,33 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
       child: Material(
         borderRadius: BorderRadius.circular(25),
         elevation: 5,
-        child: ExpansionTile(
+        child: 
+
+        
+        
+        ExpansionTile(
           title: Text(consultas.fecha),
           subtitle: Text(consultas.tipoFicha),
-          trailing: Icon(
-            //consultasList.consultas[i].fecha.toString()
+          trailing: Icon( 
             consultas.isExpander
                 ? Icons.arrow_drop_down_circle
                 : Icons.arrow_drop_down,
           ),
-          expandedAlignment: Alignment.centerLeft,
+          expandedAlignment: Alignment.topLeft,
           children: <Widget>[
-            ListTile(title: Text(consultas.medico)), //
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                   FaIcon( FontAwesomeIcons.filePdf ),
+                ],
+              ),
+            ), // 
           ],
           onExpansionChanged: (bool expanded) {
-            setState(() {
-              consultas.isExpander = expanded;
-              print(consultas.isExpander);
-            });
+            /*setState(() {
+              consultas.isExpander = expanded; 
+            });*/
           },
         ),
       ),

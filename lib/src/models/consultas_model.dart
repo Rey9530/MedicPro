@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:medicpro/src/utils/variables.dart';
+
 class Consultas {
     Consultas({
         required this.msj,
@@ -34,6 +36,7 @@ class Consulta {
         required this.fecha,
         required this.tipoFicha,
         required this.tkConsulta,
+        this.ruta,
         this.isExpander = false,
     });
 
@@ -41,6 +44,7 @@ class Consulta {
     String fecha;
     String tipoFicha;
     String tkConsulta;
+    String? ruta;
     bool isExpander;
 
     factory Consulta.fromJson(String str) => Consulta.fromMap(json.decode(str));
@@ -52,6 +56,7 @@ class Consulta {
         fecha: json["fecha"],
         tipoFicha: json["tipo_ficha"],
         tkConsulta: json["tk_consulta"],
+        ruta: json["ruta"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -59,6 +64,11 @@ class Consulta {
         "fecha": fecha,
         "tipo_ficha": tipoFicha,
         "tk_consulta": tkConsulta,
+        "ruta": ruta,
     };
+
+    getUrl(){
+      return baseUrlSsl+ruta!;
+    }
 }
  
