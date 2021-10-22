@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:medicpro/src/providers/providers.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter/material.dart'; 
 class ImagenPerfil extends StatelessWidget {
   final String urlImagePerfil;
   final double width;
@@ -13,22 +10,20 @@ class ImagenPerfil extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
-    final providerExpediente = Provider.of<ExpedientesProvider>(context);
-     dynamic url = providerExpediente.expeidnteSeleted!.getImg;
-    if (url == null)
+  Widget build(BuildContext context) { 
+    if (urlImagePerfil == "")
       return ClipRRect(
         borderRadius: BorderRadius.circular(125),
         child: Image(image: AssetImage("assets/imgs/no-image.png"),
           fit: BoxFit.cover,
         ),
       );
-    if (url.startsWith("https"))
+    if (urlImagePerfil.startsWith("https"))
       return ClipRRect(
         borderRadius: BorderRadius.circular(this.radius),
         child: FadeInImage(
           placeholder: AssetImage("assets/imgs/no-image.png"),
-          image: NetworkImage(url),
+          image: NetworkImage(urlImagePerfil),
           width: this.width,
           height: this.height,
           fit: BoxFit.cover,
@@ -37,7 +32,7 @@ class ImagenPerfil extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(this.radius),
       child: Image.file(
-        File(url),
+        File(urlImagePerfil),
         fit: BoxFit.cover,
         width: this.width,
         height: this.height,
