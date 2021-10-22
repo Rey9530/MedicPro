@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/providers/providers.dart';
@@ -72,45 +72,6 @@ class _BodyListConsultasState extends State<BodyListConsultas> {
         ),
         
       ],
-    );
-  }
-
-  _consultaItem(Consulta consultas, int i) {
-    return Container(
-      margin: const EdgeInsets.all(5),
-      child: Material(
-        borderRadius: BorderRadius.circular(25),
-        elevation: 5,
-        child: 
-
-        
-        
-        ExpansionTile(
-          title: Text(consultas.fecha),
-          subtitle: Text(consultas.tipoFicha),
-          trailing: Icon( 
-            consultas.isExpander
-                ? Icons.arrow_drop_down_circle
-                : Icons.arrow_drop_down,
-          ),
-          expandedAlignment: Alignment.topLeft,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                   FaIcon( FontAwesomeIcons.filePdf ),
-                ],
-              ),
-            ), // 
-          ],
-          onExpansionChanged: (bool expanded) {
-            /*setState(() {
-              consultas.isExpander = expanded; 
-            });*/
-          },
-        ),
-      ),
     );
   }
 }
