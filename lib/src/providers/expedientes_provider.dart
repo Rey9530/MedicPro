@@ -152,8 +152,7 @@ class ExpedientesProvider extends ChangeNotifier {
     final url = Uri.https(_baseUrl, '/core/api_rest/update_expedientes');
     expdiente.token = token;
     await http.post(url, body: expdiente.toSend());
-    final index = this.lisExpdientes.indexWhere(
-        (element) => element.token_expediente == expdiente.token_expediente);
+    final index = this.lisExpdientes.indexWhere((element) => element.token_expediente == expdiente.token_expediente);// imterezante
     if (this.newPictureFile != null) {
       final String? img = await uploadImage(expdiente.token_expediente);
       expdiente.foto = img!;
