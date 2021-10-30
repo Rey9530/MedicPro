@@ -9,8 +9,7 @@ final dataUser = new AuthServices();
 
 class CitasProvider extends ChangeNotifier {
   String _baseUrl = baseUrl;
-  int _page = 0;
-  DateTime _mesEnVista = DateTime.now();
+  int _page = 0; 
   bool isLoading = false;
   List<Event> listEvents = [];
   List<TiposConsultas> dataTipos = []; 

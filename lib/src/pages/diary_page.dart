@@ -1,6 +1,5 @@
 ///Dart imports
-import 'dart:core';
-import 'dart:math';
+import 'dart:core'; 
 
 ///Package imports
 import 'package:flutter/foundation.dart';
@@ -34,13 +33,11 @@ class DiaryPage extends SampleView {
 
 class _DiaryPageState extends SampleViewState {
   _DiaryPageState();
-
-  late List<String> _subjectCollection;
+ 
   late List<Appointment> _appointments;
   late bool _isMobile;
 
-  late List<TiposConsultas> _colorCollection;
-  int _selectedColorIndex = 0;
+  late List<TiposConsultas> _colorCollection; 
   late List<DateTime> _visibleDates;
   late _DataSource _events;
   Appointment? _selectedAppointment;
@@ -68,8 +65,7 @@ class _DiaryPageState extends SampleViewState {
     calendarController.view = _view;
     _appointments = [];
     _events = _DataSource(_appointments);
-    _selectedAppointment = null;
-    _selectedColorIndex = 0;
+    _selectedAppointment = null; 
     _subject = '';
     super.initState();
   }
@@ -270,8 +266,7 @@ class _DiaryPageState extends SampleViewState {
               /// calendar element, when the editor is opened.
               if (_selectedAppointment == null) {
                 _isAllDay = calendarTapDetails.targetElement ==
-                    CalendarElement.allDayPanel;
-                _selectedColorIndex = 0;
+                    CalendarElement.allDayPanel; 
                 _subject = '';
                 final DateTime date = calendarTapDetails.date!;
 
@@ -323,7 +318,7 @@ class _DiaryPageState extends SampleViewState {
                             data: temaApp,
                             child: Card(
                               margin: const EdgeInsets.all(0.0),
-                              color: temaApp != null &&
+                              color: 
                                       temaApp.brightness == Brightness.dark
                                   ? Colors.grey[850]
                                   : Colors.white,
@@ -472,12 +467,12 @@ Widget _editExceptionSeries(
     Appointment recurrenceAppointment,
     CalendarDataSource events) {
   final Color defaultColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
 
   final Color defaultTextColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black87;
 
@@ -617,12 +612,12 @@ Widget _editExceptionSeries(
 Widget _deleteRecurrence(BuildContext context, SampleModel model,
     Appointment selectedAppointment, CalendarDataSource events) {
   final Color defaultColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
 
   final Color defaultTextColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black87;
 
@@ -772,12 +767,12 @@ Widget _editRecurrence(
     CalendarDataSource events,
     List<DateTime> visibleDates) {
   final Color defaultColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
 
   final Color defaultTextColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black87;
 
@@ -927,12 +922,12 @@ Widget displayAppointmentDetails(
     CalendarDataSource events,
     List<DateTime> visibleDates) {
   final Color defaultColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
 
   final Color defaultTextColor =
-      temaApp != null && temaApp.brightness == Brightness.dark
+       temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black87;
 
@@ -1275,8 +1270,7 @@ class PopUpAppointmentEditor extends StatefulWidget {
 }
 
 class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
-  int _selectedColorIndex = 0;
-  int _selectedTimeZoneIndex = 0;
+  int _selectedColorIndex = 0; 
   late DateTime _startDate;
   late DateTime _endDate;
   late TimeOfDay _startTime;
@@ -1329,12 +1323,12 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
   @override
   Widget build(BuildContext context) {
     final Color defaultColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black54;
 
     final Color defaultTextColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black87;
 
@@ -1824,8 +1818,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                     ),
                     fillColor: widget.model.backgroundColor,
                     onPressed: () {
-                      if (widget.selectedAppointment != null ||
-                          widget.newAppointment != null) {
+                      if (  widget.newAppointment != null) {
                         if (widget.events.appointments!.isNotEmpty &&
                             widget.events.appointments!
                                 .contains(widget.selectedAppointment)) {
@@ -1880,7 +1873,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
   /// Return the resource editor to edit the resource collection for an
   /// appointment
   Widget _getResourceEditor(TextStyle hintTextStyle) {
-    if (_selectedResources == null || _selectedResources.isEmpty) {
+    if (  _selectedResources.isEmpty) {
       return Text('Add people', style: hintTextStyle);
     }
 
@@ -2218,7 +2211,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
       _dayOfWeekText = weekDay[_dayOfWeek - 1];
       _recurrenceProperties!.week = _weekNumber;
       _recurrenceProperties!.dayOfWeek = _dayOfWeek;
-      _monthIconColor = temaApp != null && temaApp.brightness == Brightness.dark
+      _monthIconColor =  temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
       _weekIconColor = widget.model.backgroundColor;
@@ -2232,7 +2225,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
       _recurrenceProperties!.dayOfWeek = 0;
       _recurrenceProperties!.week = 0;
       _recurrenceProperties!.dayOfMonth = _dayOfMonth;
-      _weekIconColor = temaApp != null && temaApp.brightness == Brightness.dark
+      _weekIconColor =  temaApp.brightness == Brightness.dark
           ? Colors.white
           : Colors.black54;
       _monthIconColor = widget.model.backgroundColor;
@@ -2419,21 +2412,21 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
   @override
   Widget build(BuildContext context) {
     final Color defaultColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black54;
 
     final Color defaultTextColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black87;
 
     final Color defaultButtonColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white10
             : Colors.white;
     final Color borderColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.transparent;
 
@@ -2444,7 +2437,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: const BorderRadius.all(Radius.circular(4)),
-          color: temaApp != null && temaApp.brightness == Brightness.dark
+          color:  temaApp.brightness == Brightness.dark
               ? Colors.grey[850]
               : Colors.white,
         ),
@@ -2475,8 +2468,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                       margin: const EdgeInsets.symmetric(vertical: 3),
                       child: ListTile(
                         title: Text(
-                          widget.selectedAppointment != null &&
-                                  widget.newAppointment == null
+                            widget.newAppointment == null
                               ? 'Edit appointment'
                               : 'New appointment',
                           style: TextStyle(
@@ -3247,7 +3239,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                           cursorColor:
                                               widget.model.backgroundColor,
                                           onChanged: (String value) {
-                                            if (value != null &&
+                                            if (
                                                 value.isNotEmpty) {
                                               _interval = int.parse(value);
                                               if (_interval == 0) {
@@ -3255,8 +3247,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                               } else if (_interval! >= 999) {
                                                 _interval = 999;
                                               }
-                                            } else if (value.isEmpty ||
-                                                value == null) {
+                                            } else if (value.isEmpty  ) {
                                               _interval = 1;
                                             }
                                             _recurrenceProperties!.interval =
@@ -3872,9 +3863,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                                             .backgroundColor,
                                                         onChanged:
                                                             (String value) {
-                                                          if (value != null &&
-                                                              value
-                                                                  .isNotEmpty) {
+                                                          if (  value.isNotEmpty) {
                                                             _dayOfMonth =
                                                                 int.parse(
                                                                     value);
@@ -3897,13 +3886,12 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                                           _recurrenceProperties!
                                                                   .dayOfMonth =
                                                               _dayOfMonth;
-                                                          _weekIconColor = temaApp !=
-                                                                      null &&
-                                                                  temaApp ==
-                                                                      Brightness
-                                                                          .dark
-                                                              ? Colors.white
-                                                              : Colors.black54;
+                                                          // ignore: unrelated_type_equality_checks
+                                                          if (temaApp == Brightness.dark) {
+                                                            _weekIconColor = Colors.white;
+                                                          } else {
+                                                            _weekIconColor = Colors.black54;
+                                                          }
                                                           _monthIconColor = widget
                                                               .model
                                                               .backgroundColor;
@@ -4147,10 +4135,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                                                   .backgroundColor,
                                                               onChanged: (String
                                                                   value) async {
-                                                                if (value !=
-                                                                        null &&
-                                                                    value
-                                                                        .isNotEmpty) {
+                                                                if ( value.isNotEmpty) {
                                                                   _count =
                                                                       int.parse(
                                                                           value);
@@ -4171,10 +4156,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                                                   _recurrenceProperties!
                                                                           .recurrenceCount =
                                                                       _count!;
-                                                                } else if (value
-                                                                        .isEmpty ||
-                                                                    value ==
-                                                                        null) {
+                                                                } else if (value.isEmpty) {
                                                                   _noEndDateRange();
                                                                 }
                                                               },
@@ -4456,21 +4438,21 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                                   .length))),
                                   cursorColor: widget.model.backgroundColor,
                                   onChanged: (String value) {
-                                    if (value != null && value.isNotEmpty) {
+                                    if (  value.isNotEmpty) {
                                       _dayOfMonth = int.parse(value);
                                       if (_dayOfMonth == 0) {
                                         _dayOfMonth = _startDate.day;
                                       } else if (_dayOfMonth >= 31) {
                                         _dayOfMonth = 31;
                                       }
-                                    } else if (value.isEmpty || value == null) {
+                                    } else if (value.isEmpty ) {
                                       _dayOfMonth = _startDate.day;
                                     }
                                     _recurrenceProperties!.dayOfWeek = 0;
                                     _recurrenceProperties!.week = 0;
                                     _recurrenceProperties!.dayOfMonth =
                                         _dayOfMonth;
-                                    _weekIconColor = temaApp != null &&
+                                    _weekIconColor = 
                                             temaApp.brightness ==
                                                 Brightness.dark
                                         ? Colors.white
@@ -5118,8 +5100,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                               widget.events.notifyListeners(
                                   CalendarDataSourceAction.add,
                                   <Appointment>[parentAppointment]);
-                              if (widget.selectedAppointment != null ||
-                                  widget.newAppointment != null) {
+                              if ( widget.newAppointment != null) {
                                 if (widget.events.appointments!.isNotEmpty &&
                                     widget.events.appointments!
                                         .contains(widget.selectedAppointment)) {
@@ -5175,7 +5156,7 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                   widget.appointment);
                               Navigator.pop(context);
                             } else {
-                              if (widget.selectedAppointment != null ||
+                              if (
                                   widget.newAppointment != null) {
                                 if (widget.events.appointments!.isNotEmpty &&
                                     widget.events.appointments!
@@ -5331,8 +5312,7 @@ class AppointmentEditor extends StatefulWidget {
 }
 
 class _AppointmentEditorState extends State<AppointmentEditor> {
-  int _selectedColorIndex = 0;
-  int _selectedTimeZoneIndex = 0;
+  int _selectedColorIndex = 0; 
   late DateTime _startDate;
   late TimeOfDay _startTime;
   late DateTime _endDate;
@@ -5391,8 +5371,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
       }
     } else {
       _isAllDay = widget.targetElement == CalendarElement.allDayPanel;
-      _selectedColorIndex = 0;
-      _selectedTimeZoneIndex = 0;
+      _selectedColorIndex = 0; 
       _subject = '';
       _notes = '';
       _location = '';
@@ -5902,7 +5881,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
         data: temaApp,
         child: Scaffold(
             backgroundColor:
-                temaApp != null && temaApp.brightness == Brightness.dark
+                 temaApp.brightness == Brightness.dark
                     ? Colors.grey[850]
                     : Colors.white,
             appBar: AppBar(
@@ -6047,8 +6026,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                       (temaApp.brightness == Brightness.dark
                           ? Colors.grey[850]
                           : Colors.white)!,
-                      temaApp.brightness != null &&
-                              temaApp.brightness == Brightness.dark
+                          temaApp.brightness == Brightness.dark
                           ? Colors.white
                           : Colors.black87)
                 ],
@@ -6099,7 +6077,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   /// Return the resource editor to edit the resource collection for an
   /// appointment
   Widget _getResourceEditor(TextStyle hintTextStyle) {
-    if (_selectedResources == null || _selectedResources.isEmpty) {
+    if (  _selectedResources.isEmpty) {
       return Text('Add people', style: hintTextStyle);
     }
 
@@ -6475,7 +6453,7 @@ class _DeleteDialogState extends State<_DeleteDialog> {
   @override
   Widget build(BuildContext context) {
     final Color defaultTextColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black87;
     return SimpleDialog(
@@ -6651,7 +6629,7 @@ class _EditDialogState extends State<_EditDialog> {
   @override
   Widget build(BuildContext context) {
     final Color defaultTextColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black87;
     return SimpleDialog(
@@ -7210,11 +7188,11 @@ class _CustomRuleState extends State<_CustomRule> {
   Widget _getCustomRule(
       BuildContext context, Color backgroundColor, Color defaultColor) {
     final Color defaultTextColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white
             : Colors.black87;
     final Color defaultButtonColor =
-        temaApp != null && temaApp.brightness == Brightness.dark
+         temaApp.brightness == Brightness.dark
             ? Colors.white10
             : Colors.white;
     return Container(
@@ -7250,7 +7228,7 @@ class _CustomRuleState extends State<_CustomRule> {
                                   offset: _interval.toString().length))),
                       cursorColor: widget.model.backgroundColor,
                       onChanged: (String value) {
-                        if (value != null && value.isNotEmpty) {
+                        if (  value.isNotEmpty) {
                           _interval = int.parse(value);
                           if (_interval == 0) {
                             _interval = 1;
@@ -7259,7 +7237,7 @@ class _CustomRuleState extends State<_CustomRule> {
                               _interval = 999;
                             });
                           }
-                        } else if (value.isEmpty || value == null) {
+                        } else if (value.isEmpty ) {
                           _interval = 1;
                         }
                         _recurrenceProperties!.interval = _interval!;
@@ -7690,7 +7668,7 @@ class _CustomRuleState extends State<_CustomRule> {
                               });
                             },
                             onChanged: (String value) async {
-                              if (value != null && value.isNotEmpty) {
+                              if (  value.isNotEmpty) {
                                 _count = int.parse(value);
                                 if (_count == 0) {
                                   _count = 1;
@@ -7699,7 +7677,7 @@ class _CustomRuleState extends State<_CustomRule> {
                                     _count = 999;
                                   });
                                 }
-                              } else if (value.isEmpty || value == null) {
+                              } else if (value.isEmpty ) {
                                 _count = 1;
                               }
                               _endRule = _EndRule.count;
@@ -7753,7 +7731,7 @@ class _CustomRuleState extends State<_CustomRule> {
         data: temaApp,
         child: Scaffold(
           backgroundColor:
-              temaApp != null && temaApp.brightness == Brightness.dark
+               temaApp.brightness == Brightness.dark
                   ? Colors.grey[850]
                   : Colors.white,
           appBar: AppBar(
@@ -7789,8 +7767,7 @@ class _CustomRuleState extends State<_CustomRule> {
                     (temaApp.brightness == Brightness.dark
                         ? Colors.grey[850]
                         : Colors.white)!,
-                    temaApp.brightness != null &&
-                            temaApp.brightness == Brightness.dark
+                        temaApp.brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black87)
               ],
