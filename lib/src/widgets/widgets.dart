@@ -11,3 +11,8 @@ export 'package:medicpro/src/widgets/inputs_widget.dart';
 export 'package:medicpro/src/widgets/image_network_widget.dart';
 export 'package:medicpro/src/widgets/loading_widget.dart';
 export 'package:medicpro/src/widgets/pdf_list_widget.dart';
+export 'package:medicpro/src/widgets/edit_event.dart';
+export 'package:medicpro/src/widgets/customer_rule.dart';
+export 'package:medicpro/src/widgets/select_dialog.dart';
+export 'package:medicpro/src/widgets/select_color_widget.dart';
+export 'package:medicpro/src/widgets/eliminar_cita_widget.dart';
