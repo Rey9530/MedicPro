@@ -1,5 +1,3 @@
-///Package imports
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -35,10 +33,14 @@ class _DiaryPageState extends SampleViewState {
 
   late List<Appointment> _appointments;
   late bool _isMobile;
+  late bool _isloadin_events;
+  late List<Appointment> _eventslist;
 
   late List<TiposConsultas> _colorCollection;
   late List<DateTime> _visibleDates;
   late _DataSource _events;
+  late DateTime _initialSelectedDate;
+  late CitasProvider _citasProvider;
   Appointment? _selectedAppointment;
   bool _isAllDay = false;
   String _subject = '';
@@ -66,11 +68,20 @@ class _DiaryPageState extends SampleViewState {
     _events = _DataSource(_appointments);
     _selectedAppointment = null;
     _subject = '';
+    _initialSelectedDate = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0);
+
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _citasProvider = Provider.of<CitasProvider>(context);
+    _isloadin_events = _citasProvider.isLoading;
+    _eventslist = _citasProvider.listEvents;
+
     //// Extra small devices (phones, 600px and down)
     //// @media only screen and (max-width: 600px) {...}
     ////
@@ -88,41 +99,34 @@ class _DiaryPageState extends SampleViewState {
     //// Default width to render the mobile UI in web, if the device width exceeds
     //// the given width agenda view will render the web UI.
     _isMobile = MediaQuery.of(context).size.width < 767;
-    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final citasProvider = Provider.of<CitasProvider>(context);
-
     final double _screenHeight = MediaQuery.of(context).size.height;
+
+    _events = _DataSource(_eventslist);
+
+    final Widget _calendar = Theme(
+      /// The key set here to maintain the state,
+      ///  when we change the parent of the widget
+      data: temaApp,
+      child: _getAppointmentEditorCalendar(
+        calendarController,
+        _events,
+        _onCalendarTapped,
+        _onViewChanged,
+        scheduleViewBuilder,
+        _initialSelectedDate,
+      ),
+    );
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: FutureBuilder(
-          future: citasProvider.getAllCitas(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (!snapshot.hasData) {
-              return LoadingIndicater();
-            }
-            final List<Appointment> listadiEvents = snapshot.data;
-            _events = _DataSource(listadiEvents);
-            this._colorCollection = citasProvider.dataTipos;
-
-            final Widget _calendar = Theme(
-              /// The key set here to maintain the state,
-              ///  when we change the parent of the widget
-              data: temaApp,
-              child: _getAppointmentEditorCalendar(
-                calendarController,
-                _events,
-                _onCalendarTapped,
-                _onViewChanged,
-                scheduleViewBuilder,
-              ),
-            );
-
-            return calendarController.view == CalendarView.month &&
+        body: (_isloadin_events)
+            ? LoadingIndicater()
+            : calendarController.view == CalendarView.month &&
                     model.isWebFullView &&
                     _screenHeight < 800
                 ? Scrollbar(
@@ -139,9 +143,10 @@ class _DiaryPageState extends SampleViewState {
                       ],
                     ),
                   )
-                : Container(color: model.cardThemeColor, child: _calendar);
-          },
-        ),
+                : Container(
+                    color: model.cardThemeColor,
+                    child: _calendar,
+                  ),
       ),
     );
   }
@@ -150,10 +155,13 @@ class _DiaryPageState extends SampleViewState {
   Widget scheduleViewBuilder(
       BuildContext buildContext, ScheduleViewMonthHeaderDetails details) {
     final String monthName = getMonthDate(details.date.month);
+    print(details.date);
+
     return Stack(
       children: <Widget>[
         Image(
-          image: ExactAssetImage('assets/meses/' + details.date.month.toString() + '.png'),
+          image: ExactAssetImage(
+              'assets/meses/' + details.date.month.toString() + '.png'),
           fit: BoxFit.cover,
           width: details.bounds.width,
           height: details.bounds.height,
@@ -172,12 +180,15 @@ class _DiaryPageState extends SampleViewState {
     );
   }
 
-
-
   /// The method called whenever the calendar view navigated to previous/next
   /// view or switched to different calendar view.
-  void _onViewChanged(ViewChangedDetails visibleDatesChangedDetails) {
-    _visibleDates = visibleDatesChangedDetails.visibleDates;
+  void _onViewChanged(ViewChangedDetails visibleDatesChangedDetails) { 
+
+    //Actualizamos las fechas de inicio y fin antes de hacer la peticion a la api
+    _citasProvider.fecha_inicio = visibleDatesChangedDetails.visibleDates[0];
+    _citasProvider.fecha_fin = visibleDatesChangedDetails.visibleDates[visibleDatesChangedDetails.visibleDates.length - 1];
+    //Se genera la peticion
+    _citasProvider.getAllCitas();
     if (_view == calendarController.view ||
         !model.isWebFullView ||
         (_view != CalendarView.month &&
@@ -200,8 +211,6 @@ class _DiaryPageState extends SampleViewState {
   void _onCalendarTapped(CalendarTapDetails calendarTapDetails) {
     /// Condition added to open the editor, when the calendar elements tapped
     /// other than the header.
-    
-    
     if (calendarTapDetails.targetElement == CalendarElement.header ||
         calendarTapDetails.targetElement == CalendarElement.resourceHeader) {
       return;
@@ -214,7 +223,8 @@ class _DiaryPageState extends SampleViewState {
     if (!model.isWebFullView && calendarController.view == CalendarView.month) {
       calendarController.view = CalendarView.day;
     } else {
-      if (calendarTapDetails.appointments != null && calendarTapDetails.targetElement == CalendarElement.appointment) {
+      if (calendarTapDetails.appointments != null &&
+          calendarTapDetails.targetElement == CalendarElement.appointment) {
         final dynamic appointment = calendarTapDetails.appointments![0];
         if (appointment is Appointment) {
           _selectedAppointment = appointment;
@@ -226,10 +236,9 @@ class _DiaryPageState extends SampleViewState {
 
       /// To open the appointment editor for web,
       /// when the screen width is greater than 767.
-      print(model.isWebFullView );
-      print(_isMobile);
       if (model.isWebFullView && !_isMobile) {
-        final bool _isAppointmentTapped = calendarTapDetails.targetElement == CalendarElement.appointment;
+        final bool _isAppointmentTapped =
+            calendarTapDetails.targetElement == CalendarElement.appointment;
         showDialog<Widget>(
             context: context,
             builder: (BuildContext context) {
@@ -339,31 +348,36 @@ class _DiaryPageState extends SampleViewState {
   }
 
   /// Returns the calendar based on the properties passed.
-  SfCalendar _getAppointmentEditorCalendar(
-      [CalendarController? _calendarController,
-      CalendarDataSource? _calendarDataSource,
-      dynamic calendarTapCallback,
-      ViewChangedCallback? viewChangedCallback,
-      dynamic scheduleViewBuilder]) {
+  SfCalendar _getAppointmentEditorCalendar([
+    CalendarController? _calendarController,
+    CalendarDataSource? _calendarDataSource,
+    dynamic calendarTapCallback,
+    ViewChangedCallback? viewChangedCallback,
+    dynamic scheduleViewBuilder,
+    DateTime? initialSelectedDate,
+  ]) {
     return SfCalendar(
-        controller: _calendarController,
-        showNavigationArrow: model.isWebFullView,
-        allowedViews: allowedViews,
-        showDatePickerButton: true,
-        scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
-        dataSource: _calendarDataSource,
-        onTap: calendarTapCallback,
-        onViewChanged: viewChangedCallback,
-        initialDisplayDate: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 0, 0, 0),
-        monthViewSettings: const MonthViewSettings(
-            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-            appointmentDisplayCount: 4),
-        timeSlotViewSettings: const TimeSlotViewSettings(
-            minimumAppointmentDuration: Duration(minutes: 60)));
+      initialSelectedDate: initialSelectedDate,
+      controller: _calendarController,
+      showNavigationArrow: model.isWebFullView,
+      allowedViews: allowedViews,
+      showDatePickerButton: true,
+      scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
+      dataSource: _calendarDataSource,
+      onTap: calendarTapCallback,
+      onViewChanged: viewChangedCallback,
+      allowDragAndDrop: true,
+      initialDisplayDate: initialSelectedDate,
+      monthViewSettings: const MonthViewSettings(
+        appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+        appointmentDisplayCount: 4,
+      ),
+      timeSlotViewSettings: const TimeSlotViewSettings(
+        minimumAppointmentDuration: Duration(minutes: 60),
+      ),
+    );
   }
 }
-
 
 /// An object to set the appointment collection data source to collection, and
 /// allows to add, remove or reset the appointment collection.
@@ -1027,8 +1041,6 @@ String _getSelectedResourceText(
 
   return resourceNames!;
 }
-
-
 
 /// Builds the appointment editor with minimal elements in a pop-up based on the
 /// tapped calendar element.
@@ -4641,8 +4653,8 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
                                             _selectedColorIndex,
                                             widget.colorCollection,
                                             widget.model,
-                                            onChanged: (PickerChangedDetails
-                                                details) {
+                                            onChanged:
+                                                (PickerChangedDetails details) {
                                               _selectedColorIndex =
                                                   details.index;
                                             },
@@ -5029,7 +5041,6 @@ class _AppointmentEditorWebState extends State<AppointmentEditorWeb> {
     );
   }
 }
-
 
 bool _canAddRecurrenceAppointment(
     List<DateTime> visibleDates,

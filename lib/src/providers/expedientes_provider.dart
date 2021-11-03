@@ -232,8 +232,7 @@ class ExpedientesProvider extends ChangeNotifier {
         'textStyle': TextStyle(color: temaApp.primaryColor),
       };
       this.listeEstadosCivil.add(variebla);
-    });
-    print(this.listeEstadosCivil[0]);
+    }); 
     //notifyListeners();
   }
 

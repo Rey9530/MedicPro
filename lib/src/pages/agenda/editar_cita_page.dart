@@ -8,6 +8,7 @@ import 'package:medicpro/src/utils/variables.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
+
 /// Builds the appointment editor with all the required elements based on the
 /// tapped calendar element for mobile.
 class AppointmentEditor extends StatefulWidget {
@@ -284,22 +285,24 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                             });
 
                                     if (time != null && time != _startTime) {
-                                      setState(() {
-                                        _startTime = time;
-                                        final Duration difference =
-                                            _endDate.difference(_startDate);
-                                        _startDate = DateTime(
-                                            _startDate.year,
-                                            _startDate.month,
-                                            _startDate.day,
-                                            _startTime.hour,
-                                            _startTime.minute,
-                                            0);
-                                        _endDate = _startDate.add(difference);
-                                        _endTime = TimeOfDay(
-                                            hour: _endDate.hour,
-                                            minute: _endDate.minute);
-                                      });
+                                      setState(
+                                        () {
+                                          _startTime = time;
+                                          final Duration difference =
+                                              _endDate.difference(_startDate);
+                                          _startDate = DateTime(
+                                              _startDate.year,
+                                              _startDate.month,
+                                              _startDate.day,
+                                              _startTime.hour,
+                                              _startTime.minute,
+                                              0);
+                                          _endDate = _startDate.add(difference);
+                                          _endTime = TimeOfDay(
+                                              hour: _endDate.hour,
+                                              minute: _endDate.minute);
+                                        },
+                                      );
                                     }
                                   },
                                   child: Text(
@@ -309,168 +312,110 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                 )),
                     ])),
             ListTile(
-                contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-                leading: const Text(''),
-                title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 7,
-                        child: GestureDetector(
-                          onTap: () async {
-                            final DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: _endDate,
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime(2100),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                    data: ThemeData(
-                                      brightness: temaApp.brightness,
-                                      colorScheme:
-                                          getColorScheme(widget.model, true),
-                                      primaryColor:
-                                          widget.model.backgroundColor,
-                                    ),
-                                    child: child!,
-                                  );
-                                });
+              contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+              leading: const Text(''),
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 7,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final DateTime? date = await showDatePicker(
+                            context: context,
+                            initialDate: _endDate,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData(
+                                  brightness: temaApp.brightness,
+                                  colorScheme:
+                                      getColorScheme(widget.model, true),
+                                  primaryColor: widget.model.backgroundColor,
+                                ),
+                                child: child!,
+                              );
+                            });
 
-                            if (date != null && date != _endDate) {
-                              setState(() {
-                                final Duration difference =
-                                    _endDate.difference(_startDate);
-                                _endDate = DateTime(
-                                    date.year,
-                                    date.month,
-                                    date.day,
-                                    _endTime.hour,
-                                    _endTime.minute,
-                                    0);
-                                if (_endDate.isBefore(_startDate)) {
-                                  _startDate = _endDate.subtract(difference);
-                                  _startTime = TimeOfDay(
-                                      hour: _startDate.hour,
-                                      minute: _startDate.minute);
-                                }
-                              });
+                        if (date != null && date != _endDate) {
+                          setState(() {
+                            final Duration difference =
+                                _endDate.difference(_startDate);
+                            _endDate = DateTime(date.year, date.month, date.day,
+                                _endTime.hour, _endTime.minute, 0);
+                            if (_endDate.isBefore(_startDate)) {
+                              _startDate = _endDate.subtract(difference);
+                              _startTime = TimeOfDay(
+                                  hour: _startDate.hour,
+                                  minute: _startDate.minute);
                             }
-                          },
-                          child: Text(
-                            DateFormat('EEE, MMM dd yyyy').format(_endDate),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
+                          });
+                        }
+                      },
+                      child: Text(
+                        DateFormat('EEE, dd MMM yyyy').format(_endDate),
+                        textAlign: TextAlign.left,
                       ),
-                      Expanded(
-                          flex: 3,
-                          child: _isAllDay
-                              ? const Text('')
-                              : GestureDetector(
-                                  onTap: () async {
-                                    final TimeOfDay? time =
-                                        await showTimePicker(
-                                            context: context,
-                                            initialTime: TimeOfDay(
-                                                hour: _endTime.hour,
-                                                minute: _endTime.minute),
-                                            builder: (BuildContext context,
-                                                Widget? child) {
-                                              return Theme(
-                                                data: ThemeData(
-                                                  brightness:
-                                                      temaApp.brightness,
-                                                  colorScheme: getColorScheme(
-                                                      widget.model, false),
-                                                  primaryColor: widget
-                                                      .model.backgroundColor,
-                                                ),
-                                                child: child!,
-                                              );
-                                            });
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: _isAllDay
+                        ? const Text('')
+                        : GestureDetector(
+                            onTap: () async {
+                              final TimeOfDay? time = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay(
+                                      hour: _endTime.hour,
+                                      minute: _endTime.minute),
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Theme(
+                                      data: ThemeData(
+                                        brightness: temaApp.brightness,
+                                        colorScheme:
+                                            getColorScheme(widget.model, false),
+                                        primaryColor:
+                                            widget.model.backgroundColor,
+                                      ),
+                                      child: child!,
+                                    );
+                                  });
 
-                                    if (time != null && time != _endTime) {
-                                      setState(() {
-                                        _endTime = time;
-                                        final Duration difference =
-                                            _endDate.difference(_startDate);
-                                        _endDate = DateTime(
-                                            _endDate.year,
-                                            _endDate.month,
-                                            _endDate.day,
-                                            _endTime.hour,
-                                            _endTime.minute,
-                                            0);
-                                        if (_endDate.isBefore(_startDate)) {
-                                          _startDate =
-                                              _endDate.subtract(difference);
-                                          _startTime = TimeOfDay(
-                                              hour: _startDate.hour,
-                                              minute: _startDate.minute);
-                                        }
-                                      });
+                              if (time != null && time != _endTime) {
+                                setState(
+                                  () {
+                                    _endTime = time;
+                                    final Duration difference =
+                                        _endDate.difference(_startDate);
+                                    _endDate = DateTime(
+                                        _endDate.year,
+                                        _endDate.month,
+                                        _endDate.day,
+                                        _endTime.hour,
+                                        _endTime.minute,
+                                        0);
+                                    if (_endDate.isBefore(_startDate)) {
+                                      _startDate =
+                                          _endDate.subtract(difference);
+                                      _startTime = TimeOfDay(
+                                          hour: _startDate.hour,
+                                          minute: _startDate.minute);
                                     }
                                   },
-                                  child: Text(
-                                    DateFormat('hh:mm a').format(_endDate),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                )),
-                    ])),
-            ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-              leading: Icon(
-                Icons.refresh,
-                color: defaultColor,
-              ),
-              title: Text(_rule == SelectRule.doesNotRepeat
-                  ? 'Does not repeat'
-                  : _rule == SelectRule.everyDay
-                      ? 'Every day'
-                      : _rule == SelectRule.everyWeek
-                          ? 'Every week'
-                          : _rule == SelectRule.everyMonth
-                              ? 'Every month'
-                              : _rule == SelectRule.everyYear
-                                  ? 'Every year'
-                                  : 'Custom'),
-              onTap: () async {
-                final dynamic properties = await showDialog<dynamic>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return WillPopScope(
-                          onWillPop: () async {
-                            return true;
-                          },
-                          child: Theme(
-                            data: temaApp,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            child: SelectRuleDialog(
-                              widget.model,
-                              _recurrenceProperties,
-                              HexColor.fromHex(widget
-                                  .colorCollection[_selectedColorIndex]
-                                  .backgroundColor),
-                              widget.events,
-                              selectedAppointment: widget.selectedAppointment ??
-                                  Appointment(
-                                    startTime: _startDate,
-                                    endTime: _endDate,
-                                    isAllDay: _isAllDay,
-                                    subject: _subject == ''
-                                        ? '(No title)'
-                                        : _subject,
-                                  ),
-                              onChanged: (PickerChangedDetails details) {
-                                setState(() {
-                                  _rule = details.selectedRule;
-                                });
-                              },
+                                );
+                              }
+                            },
+                            child: Text(
+                              DateFormat('hh:mm a').format(_endDate),
+                              textAlign: TextAlign.right,
                             ),
-                          ));
-                    });
-                _recurrenceProperties = properties as RecurrenceProperties?;
-              },
+                          ),
+                  ),
+                ],
+              ),
             ),
             if (widget.events.resources == null ||
                 widget.events.resources!.isEmpty)
@@ -662,7 +607,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               context: context,
                               builder: (BuildContext context) {
                                 return WillPopScope(
-                                  onWillPop: () async { 
+                                  onWillPop: () async {
                                     return true;
                                   },
                                   child: Theme(

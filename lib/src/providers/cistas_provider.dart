@@ -10,31 +10,40 @@ final dataUser = new AuthServices();
 class CitasProvider extends ChangeNotifier {
   String _baseUrl = baseUrl;
   int _page = 0; 
+  DateTime fecha_inicio = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
+  DateTime fecha_fin = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
   bool isLoading = false;
-  List<Event> listEvents = [];
+  List<Appointment> listEvents = [];
   List<TiposConsultas> dataTipos = []; 
 
   //displayAppointmentDetails
   //List<String> colorNames,
   CitasProvider() {
+    this.isLoading = true;
     this.getAllCitas();
   }
 
-  Future<List<Appointment>> getAllCitas([bool reload = false]) async {  
-    this.isLoading = true;
-    final data = await this._getJsonData('/core/api_rest/get_citas', this._page);
+   updateloadin(bool valor) {
+    this.isLoading = valor;
+    notifyListeners();
+
+   }  
+   getAllCitas( [bool reload = false]) async {  
+    //notifyListeners();
+    final data = await this._getJsonData('/core/api_rest/get_citas', this._page, this.fecha_inicio, this.fecha_fin );
     final reponse = Events.fromJson(data); 
      this.dataTipos = reponse.dataTipos;
-    if (!reload) {
+   /* if (!reload) {
       this.listEvents = reponse.data;
       this._page = 1;
     } else {
+      this.updateloadin= [...this.listEvents, ...reponse.data];
       this.listEvents = [...this.listEvents, ...reponse.data];
       this._page++;
-    }
+    }*/
 
     final List<Appointment> appointmentCollection = <Appointment>[];
-    this.listEvents.map((e) { 
+    reponse.data.map((e) { 
       Color color = HexColor.fromHex("#" +e.backgroundColor );
       appointmentCollection.add(
         Appointment(
@@ -50,16 +59,20 @@ class CitasProvider extends ChangeNotifier {
           subject: e.title,
         ),
       );
-    }).toList(); 
-    this.isLoading = false;
-    return appointmentCollection;
+    }).toList();  
+    this.listEvents = appointmentCollection;
+     
+    this.isLoading= false;
+    notifyListeners();
   }
 
-  Future<String> _getJsonData(String endPoint, [int pagina = 0]) async {
+  Future<String> _getJsonData(String endPoint, [int pagina = 0, DateTime? fecha, DateTime? fecha2 ]) async {
     String token = await dataUser.readToken();
     final url = Uri.https(_baseUrl, endPoint, {
       'page': pagina.toString(),
       'token': token,
+      'inicio': fecha.toString(),
+      'fin': fecha2.toString(),
     });
     final response = await http.get(url);
     return response.body;

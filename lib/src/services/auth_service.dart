@@ -21,8 +21,7 @@ class AuthServices extends ChangeNotifier {
 
     final Map<String, dynamic> decodeData = json.decode(resp.body);
 
-    if (decodeData.containsKey("token")) {
-      print(decodeData);
+    if (decodeData.containsKey("token")) { 
       await storage.write(key: 'token', value: decodeData['token']);
       return null;
     } else {
