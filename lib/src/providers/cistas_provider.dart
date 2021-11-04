@@ -10,8 +10,8 @@ final dataUser = new AuthServices();
 class CitasProvider extends ChangeNotifier {
   String _baseUrl = baseUrl;
   int _page = 0; 
-  DateTime fecha_inicio = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
-  DateTime fecha_fin = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
+  DateTime fechaInicio = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
+  DateTime fechaFin = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0); 
   bool isLoading = false;
   List<Appointment> listEvents = [];
   List<TiposConsultas> dataTipos = []; 
@@ -28,10 +28,9 @@ class CitasProvider extends ChangeNotifier {
     notifyListeners();
 
    }  
-   getAllCitas( [bool reload = false]) async {  
-    //notifyListeners();
-    final data = await this._getJsonData('/core/api_rest/get_citas', this._page, this.fecha_inicio, this.fecha_fin );
-    final reponse = Events.fromJson(data); 
+   getAllCitas( [bool reload = false]) async {
+    final data = await this._getJsonData('/core/api_rest/get_citas', this._page, this.fechaInicio, this.fechaFin );
+    final reponse = Events.fromJson(data);
      this.dataTipos = reponse.dataTipos;
    /* if (!reload) {
       this.listEvents = reponse.data;
@@ -43,7 +42,7 @@ class CitasProvider extends ChangeNotifier {
     }*/
 
     final List<Appointment> appointmentCollection = <Appointment>[];
-    reponse.data.map((e) { 
+    reponse.data.map((e) {
       Color color = HexColor.fromHex("#" +e.backgroundColor );
       appointmentCollection.add(
         Appointment(
@@ -59,7 +58,7 @@ class CitasProvider extends ChangeNotifier {
           subject: e.title,
         ),
       );
-    }).toList();  
+    }).toList();
     this.listEvents = appointmentCollection;
      
     this.isLoading= false;
@@ -74,6 +73,8 @@ class CitasProvider extends ChangeNotifier {
       'inicio': fecha.toString(),
       'fin': fecha2.toString(),
     });
+    print(fecha.toString());
+    print(fecha2.toString());
     final response = await http.get(url);
     return response.body;
   }

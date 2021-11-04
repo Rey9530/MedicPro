@@ -3,29 +3,29 @@ String baseUrlSsl = "https://medicprohn.app/core/";
 
 /// Dropdown list items for recurrenceType
 List<String> repeatOption = <String>[
-  'Never',
-  'Daily',
-  'Weekly',
-  'Monthly',
-  'Yearly'
+  'Nunca',
+  'Diaria',
+  'Semanalmente',
+  'Mensual',
+  'Anual'
 ];
 
 /// Dropdown list items for day of week
 List<String> weekDay = <String>[
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
+  'Lunes',
+  'Martes',
+  'Miércoles',
+  'Jueves`',
+  'Viernes',
+  'Sábado',
+  'Domingo'
 ];
 
 /// Dropdown list items for end range
 List<String> ends = <String>[
-  'Never',
-  'Until',
-  'Count',
+  'Nunca',
+  'Hasta que',
+  'Contar',
 ];
 
 /// Dropdown list items for months of year
@@ -101,9 +101,9 @@ enum Delete { event, series }
 
 /// Dropdown list items for week number of the month.
 List<String> weekDayPosition = <String>[
-  'first',
-  'second',
-  'third',
-  'fourth',
-  'last'
+  'Primero',
+  'Segundo',
+  'Tercero',
+  'Cuarto',
+  'último'
 ];

@@ -183,29 +183,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
             const Divider(
               height: 1.0,
               thickness: 1,
-            ),
-            ListTile(
-                contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-                leading: Icon(
-                  Icons.access_time,
-                  color: defaultColor,
-                ),
-                title: Row(children: <Widget>[
-                  const Expanded(
-                    child: Text('All-day'),
-                  ),
-                  Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Switch(
-                            value: _isAllDay,
-                            onChanged: (bool value) {
-                              setState(() {
-                                _isAllDay = value;
-                              });
-                            },
-                          ))),
-                ])),
+            ), 
             ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
                 leading: const Text(''),

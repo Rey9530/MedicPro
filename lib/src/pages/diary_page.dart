@@ -33,7 +33,7 @@ class _DiaryPageState extends SampleViewState {
 
   late List<Appointment> _appointments;
   late bool _isMobile;
-  late bool _isloadin_events;
+  late bool _isloadinEvents;
   late List<Appointment> _eventslist;
 
   late List<TiposConsultas> _colorCollection;
@@ -68,8 +68,7 @@ class _DiaryPageState extends SampleViewState {
     _events = _DataSource(_appointments);
     _selectedAppointment = null;
     _subject = '';
-    _initialSelectedDate = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0);
+    _initialSelectedDate = DateTime( DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0);
 
     super.initState();
   }
@@ -79,8 +78,9 @@ class _DiaryPageState extends SampleViewState {
     super.didChangeDependencies();
 
     _citasProvider = Provider.of<CitasProvider>(context);
-    _isloadin_events = _citasProvider.isLoading;
+    _isloadinEvents = _citasProvider.isLoading;
     _eventslist = _citasProvider.listEvents;
+    _colorCollection= _citasProvider.dataTipos;
 
     //// Extra small devices (phones, 600px and down)
     //// @media only screen and (max-width: 600px) {...}
@@ -124,7 +124,7 @@ class _DiaryPageState extends SampleViewState {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: (_isloadin_events)
+        body: (_isloadinEvents)
             ? LoadingIndicater()
             : calendarController.view == CalendarView.month &&
                     model.isWebFullView &&
@@ -182,11 +182,11 @@ class _DiaryPageState extends SampleViewState {
 
   /// The method called whenever the calendar view navigated to previous/next
   /// view or switched to different calendar view.
-  void _onViewChanged(ViewChangedDetails visibleDatesChangedDetails) { 
-
+  void _onViewChanged(ViewChangedDetails visibleDatesChangedDetails) {
     //Actualizamos las fechas de inicio y fin antes de hacer la peticion a la api
-    _citasProvider.fecha_inicio = visibleDatesChangedDetails.visibleDates[0];
-    _citasProvider.fecha_fin = visibleDatesChangedDetails.visibleDates[visibleDatesChangedDetails.visibleDates.length - 1];
+    List<DateTime> fechas = visibleDatesChangedDetails.visibleDates;
+    _citasProvider.fechaInicio = fechas[0];
+    _citasProvider.fechaFin    = fechas[fechas.length - 1];
     //Se genera la peticion
     _citasProvider.getAllCitas();
     if (_view == calendarController.view ||
@@ -198,8 +198,7 @@ class _DiaryPageState extends SampleViewState {
 
     SchedulerBinding.instance?.addPostFrameCallback((Duration timeStamp) {
       setState(() {
-        _view = calendarController.view!;
-
+        _view = calendarController.view!; 
         /// Update the current view when the calendar view changed to
         /// month view or from month view.
       });
@@ -366,7 +365,7 @@ class _DiaryPageState extends SampleViewState {
       dataSource: _calendarDataSource,
       onTap: calendarTapCallback,
       onViewChanged: viewChangedCallback,
-      allowDragAndDrop: true,
+      allowDragAndDrop: true, 
       initialDisplayDate: initialSelectedDate,
       monthViewSettings: const MonthViewSettings(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
