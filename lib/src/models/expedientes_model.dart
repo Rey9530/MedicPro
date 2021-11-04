@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison
 
 import 'dart:convert';
 
@@ -23,6 +23,10 @@ class ExpedientesModel {
         data: List<ExpedienteModel>.from(
             json["data"].map((x) => ExpedienteModel.fromMap(x))),
       );
+
+  static List<ExpedienteModel> fromJsonList(List list) {
+    return list.map((item) => ExpedienteModel.fromMap(item)).toList();
+  }
 }
 
 class ExpedienteModel {
@@ -53,22 +57,30 @@ class ExpedienteModel {
     required this.fecha_nacimiento,
     required this.token_expediente,
     required this.sexo,
-    this.pais="",
-    this.departamento="",
-    this.direccionTrabajo="",
-    this.domicilio="",
-    this.email="",
-    this.estadoCivil="",
-    this.idTipoDocumento="",
-    this.municipio="",
-    this.numeroDocumento="",
-    this.telCelular="",
-    this.telDomicilio="",
-    this.telOficina="",
-    this.token="",
+    this.pais = "",
+    this.departamento = "",
+    this.direccionTrabajo = "",
+    this.domicilio = "",
+    this.email = "",
+    this.estadoCivil = "",
+    this.idTipoDocumento = "",
+    this.municipio = "",
+    this.numeroDocumento = "",
+    this.telCelular = "",
+    this.telDomicilio = "",
+    this.telOficina = "",
+    this.token = "",
   });
   get getImg {
-    if ( this.foto.startsWith("assets")) { 
+    if (this.foto.startsWith("assets")) {
+      return "https://medicprohn.app/core/$foto";
+    } else {
+      return this.foto;
+    }
+  }
+  
+  String getUrlImg() {
+    if (this.foto.startsWith("assets")) {
       return "https://medicprohn.app/core/$foto";
     } else {
       return this.foto;
@@ -166,4 +178,48 @@ class ExpedienteModel {
         telOficina: this.telOficina,
         token: this.token,
       );
+}
+
+
+
+class UserModel {
+  final String id;
+  final DateTime createdAt;
+  final String name;
+  final String avatar;
+  final String celular;
+
+  UserModel({ required this.celular, required this.id,required  this.createdAt,required  this.name,required  this.avatar});
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {  
+    return UserModel(
+      id: json["id"],
+      createdAt: json["createdAt"],
+      name: json["name"],
+      avatar: json["avatar"],
+      celular: json["celular"],
+    );
+  }
+
+  static List<UserModel> fromJsonList(List list) { 
+    return list.map((item) => UserModel.fromJson(item)).toList();
+  }
+
+  ///this method will prevent the override of toString
+  String userAsString() {
+    return '#${this.id} ${this.name}';
+  }
+
+  ///this method will prevent the override of toString
+  bool userFilterByCreationDate(String filter) {
+    return this.createdAt.toString().contains(filter);
+  }
+
+  ///custom comparing function to check if two users are equal
+  bool isEqual(UserModel model) {
+    return this.id == model.id;
+  }
+
+  @override
+  String toString() => name;
 }

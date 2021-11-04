@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:intl/intl.dart';
+import 'package:dropdown_selection/dropdown_selection.dart';
 import 'package:medicpro/src/models/model.dart';
 import 'package:medicpro/src/models/models.dart';
 import 'package:medicpro/src/providers/providers.dart';
@@ -6,8 +10,6 @@ import 'package:medicpro/src/themes/theme.dart';
 import 'package:medicpro/src/utils/funciones.dart';
 import 'package:medicpro/src/utils/variables.dart';
 import 'package:medicpro/src/widgets/widgets.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:intl/intl.dart';
 
 /// Builds the appointment editor with all the required elements based on the
 /// tapped calendar element for mobile.
@@ -152,15 +154,58 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
       _rule = SelectRule.custom;
     }
   }
+ 
 
   Widget _getAppointmentEditor(
       BuildContext context, Color backgroundColor, Color defaultColor) {
+    final expedientesProvider = Provider.of<ExpedientesProvider>(context);
     return Container(
         color: backgroundColor,
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: <Widget>[
-            ListTile(
+            Container(
+              margin: const EdgeInsets.fromLTRB(5, 10, 5, 0),
+              child: DropdownSelection<UserModel>(
+                mode: Mode.DIALOG,
+                showSearchBox: true,
+                label: "Paciente",
+                hint: "Seleccione...",
+                isFilteredOnline: true,
+                showClearButton: true,
+                autoFocusSearchBox: true,
+                popupSafeArea:const PopupSafeArea(top: true),
+                dropdownBuilder: (_, item, string) {
+                  if (item == null) return Container();
+                  return Preselected(item, string);
+                },
+                popupItemBuilder: (_, item, isSelected) {
+                  return YaSelected(item, isSelected);
+                },
+                onFind: (String filter) async {
+                  List<ExpedienteModel> listado =
+                      await expedientesProvider.searchExpediente(filter);
+                  List<UserModel> listado_ = [];
+                  listado.map((e) {
+                    listado_.add(
+                      UserModel(
+                        avatar: e.getImg,
+                        id: e.token_expediente,
+                        name: e.nombre + " " + e.apellido,
+                        createdAt: DateTime.now(), 
+                        celular: e.telCelular!,
+                      ),
+                    );
+                  }).toList();
+                  print(filter);
+                  return listado_;
+                },
+                onChanged: (data) {
+                  //print(data!.id);
+                },
+              ),
+            ),
+            /*ListTile(
               contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               leading: const Text(''),
               title: TextField(
@@ -179,11 +224,11 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                   hintText: 'Add title',
                 ),
               ),
-            ),
+            ),*/
             const Divider(
               height: 1.0,
               thickness: 1,
-            ), 
+            ),
             ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
                 leading: const Text(''),

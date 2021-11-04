@@ -256,6 +256,16 @@ class ExpedientesProvider extends ChangeNotifier {
     final popularResponse = ExpedientesModel.fromJson(response.body);
     return popularResponse.data;
   }
+  
+  Future searchExpediente2(String query) async {
+    String token = await dataUser.readToken();
+    final url = Uri.https(_baseUrl, '/core/api_rest/get_search_expedientes', {
+      'query': query,
+      'token': token,
+    });
+    final response = await http.get(url); 
+    return response.body;
+  }
 
   void suggestionByQuery(String searchTerm) {
     debouncer.value = '';

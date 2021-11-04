@@ -16,3 +16,5 @@ export 'package:medicpro/src/widgets/customer_rule.dart';
 export 'package:medicpro/src/widgets/select_dialog.dart';
 export 'package:medicpro/src/widgets/select_color_widget.dart';
 export 'package:medicpro/src/widgets/eliminar_cita_widget.dart';
+export 'package:medicpro/src/widgets/widgets_agenda_widget.dart';
+
